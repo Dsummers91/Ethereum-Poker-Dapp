@@ -2,7 +2,7 @@ os: linux
 dist: trusty
 sudo: required
 language: rust
-node_js:
+rust:
   - stable
   - beta
   - nightly
@@ -12,5 +12,5 @@ node_js:
   	fast_finish: true
 cache: cargo
 script:
-  - cargo build --verbose --all
-  - cargo test --verbose --all cargo
+  cargo build --verbose --all
+  cargo test --verbose --all cargo
