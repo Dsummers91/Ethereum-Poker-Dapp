@@ -1,0 +1,16 @@
+os: linux
+dist: trusty
+sudo: required
+language: rust
+node_js:
+  - stable
+  - beta
+  - nightly
+	matrix:
+  	allow_failures:
+    	- rust: nightly
+  	fast_finish: true
+cache: cargo
+script:
+  - cargo build --verbose --all
+  - cargo test --verbose --all cargo
