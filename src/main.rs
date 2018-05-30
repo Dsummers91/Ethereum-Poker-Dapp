@@ -4,6 +4,7 @@ mod card;
 mod player;
 mod deck;
 mod table;
+mod hand;
 
 use card::{Card};
 use deck::{Deck};

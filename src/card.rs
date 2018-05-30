@@ -32,6 +32,14 @@ impl Suit {
     }
 }
 
+impl PartialEq for Card {
+    fn eq(&self, other: &Card) -> bool {
+				// TODO: Add Suit Eq
+        self.rank == other.rank
+    }
+}
+
+
 impl Display for Card {
   fn fmt(self: &Card, f: &mut Formatter) -> Result {
     let rank = match self.rank {
