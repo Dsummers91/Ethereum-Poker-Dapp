@@ -34,7 +34,6 @@ impl Suit {
 
 impl PartialEq for Card {
     fn eq(&self, other: &Card) -> bool {
-				// TODO: Add Suit Eq
         self.rank == other.rank
     }
 }
