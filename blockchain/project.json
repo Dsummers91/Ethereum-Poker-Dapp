@@ -1,0 +1,10 @@
+{
+    "version": "8",
+    "compilation": {
+        "contracts_source_dirs": ["./contracts"],
+        "import_remappings": [],
+        "backend": {
+            "class": "populus.compilation.backends.VyperBackend"
+        }
+    }
+}
