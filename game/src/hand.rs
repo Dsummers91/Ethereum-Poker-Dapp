@@ -1,4 +1,5 @@
 use card::{Card, Suit};
+use rankings::{Ranks, get_rank};
 
 #[derive(Debug, Eq, PartialEq)]
 

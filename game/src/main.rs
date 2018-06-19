@@ -5,6 +5,7 @@ mod player;
 mod deck;
 mod table;
 mod hand;
+mod rankings;
 
 use card::{Card};
 use deck::{Deck};

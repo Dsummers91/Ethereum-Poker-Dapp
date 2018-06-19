@@ -1,6 +1,6 @@
 use std::fmt::{Display, Formatter, Result};
 use std::slice::Iter;
-
+use std::hash::{Hash};
 
 #[derive(Debug)]
 pub struct Card {
@@ -8,7 +8,7 @@ pub struct Card {
   pub rank: u8
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug, Hash, PartialEq, Eq)]
 pub enum Suit {
   Spades,
   Diamonds,
