@@ -24,10 +24,10 @@ impl Suit {
 
     pub fn get_suit(item: &Suit) -> Suit {
       match item {
-        &Suit::Spades => Suit::Spades,
-        &Suit::Diamonds => Suit::Diamonds,
-        &Suit::Hearts => Suit::Hearts,
-        &Suit::Clubs => Suit::Clubs,
+        Suit::Spades => Suit::Spades,
+        Suit::Diamonds => Suit::Diamonds,
+        Suit::Hearts => Suit::Hearts,
+        Suit::Clubs => Suit::Clubs,
       }
     }
 }
@@ -63,7 +63,7 @@ impl Display for Card {
 
 impl Card {
   pub fn new(rank: u8, suit: Suit) -> Card {
-    Card{rank: rank, suit: suit}
+    Card{rank, suit}
   }
 
   pub fn value(self: &Card) -> Vec<u8> {

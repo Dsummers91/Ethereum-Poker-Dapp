@@ -1,5 +1,4 @@
 use card::{Card, Suit};
-use rankings::{Ranks, get_rank};
 
 #[derive(Debug, Eq, PartialEq)]
 
@@ -10,8 +9,6 @@ impl Hand<Card> {
     Hand(cards)
   }
 }
-
-use std::ops::Deref;
 
 #[cfg(test)]
 mod tests {

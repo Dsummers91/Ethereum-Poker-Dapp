@@ -1,7 +1,5 @@
 use card::{Card, Suit};
 use std::collections::HashMap;
-use std::collections::hash_map::DefaultHasher;
-use std::hash::{Hash, Hasher};
 
 
 pub enum Ranks {
@@ -16,7 +14,7 @@ pub enum Ranks {
   StraightFlush, // Royal Flush Included
 }
 
-pub fn get_rank(card: Vec<Card>) -> Ranks {
+pub fn get_rank(_card: Vec<Card>) -> Ranks {
     Ranks::HighCard
 }
 
@@ -36,7 +34,7 @@ fn is_flush(cards: Vec<Card>) -> Option<Suit> {
     }
 }
 
-fn is_straight(cards: Vec<Card>) -> Option<Suit> {
+fn is_straight(_cards: Vec<Card>) -> Option<Suit> {
     None
 }
 

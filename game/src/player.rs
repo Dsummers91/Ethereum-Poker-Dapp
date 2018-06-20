@@ -9,14 +9,14 @@ pub struct Player {
 }
 
 impl Player {
-  fn sit(table: &mut Table, seat: u8) {
+  fn sit(_table: &mut Table, _seat: u8) {
 
   }
 }
 
 #[cfg(test)]
   mod tests {
-  use super::*;
+//  use super::*;
     #[test]
     fn should_be_true() {
       assert_eq!(2 + 2, 4);
