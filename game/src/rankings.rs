@@ -15,12 +15,13 @@ pub enum Ranks {
     StraightFlush, // Royal Flush Included
 }
 
-pub fn get_rank(_card: Hand<Card>) -> Ranks {
+pub fn get_rank(_card: Hand) -> Ranks {
     Ranks::HighCard
 }
 
 // Should return flush
-fn is_flush(cards: Hand<Card>) -> Option<Suit> {
+fn is_flush(hand: Hand) -> Option<Suit> {
+    let mut cards = hand.0;
     let mut suits: HashMap<Suit, u8>  = HashMap::new();
     for card in cards {
         let number = suits.entry(card.suit).or_insert(0);
@@ -36,22 +37,21 @@ fn is_flush(cards: Hand<Card>) -> Option<Suit> {
 }
 
 
-fn is_straight(mut cards: Hand<Card>) -> Option<u8> {
+fn is_straight(mut hand: Hand) -> Option<u8> {
+    let mut cards = hand.0;
     cards.sort();
-    cards.reverse();
-    let rank: u8 = cards.iter().first().unwrap().rank;
+    let rank: u8 = cards.first().unwrap().rank;
     for i in 0..5 {
-        if cards[i].value().contains(&(rank-i as u8)) {
+        if cards[i].value().contains(&(rank+i as u8)) {
             continue;
         } else if cards.len() > 5 {
-            println!("removed a card");
             cards.remove(0);
-            return is_straight(cards)
+            return is_straight(Hand::new(cards.to_vec()))
         } else {
             return None
         }
     }
-    return Some(rank)
+    return Some(rank+5)
 }
 
 

@@ -4,7 +4,7 @@ use std::hash::{Hash};
 use std::cmp::Ordering;
 
 
-#[derive(Debug, Eq)]
+#[derive(Debug, Eq, Clone)]
 pub struct Card {
   pub rank: u8,
   pub suit: Suit
