@@ -5,8 +5,12 @@ use card::{Card, Suit};
 pub struct Hand<Card> (Vec<Card>);
 
 impl Hand<Card> {
-  fn new(cards: Vec<Card>) -> Hand<Card> {
+  pub fn new(cards: Vec<Card>) -> Hand<Card> {
     Hand(cards)
+  }
+
+  pub fn values(self: Self) -> Vec<u8> {
+      vec![4]
   }
 }
 
