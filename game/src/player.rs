@@ -1,7 +1,7 @@
 use card::{Card};
-use deck::{Deck};
+//use deck::{Deck};
 use table::{Table};
-use hand::{Hand};
+//use hand::{Hand};
 
 pub struct Player {
   pub hand: Vec<Card>,

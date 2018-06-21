@@ -3,15 +3,15 @@ use std::collections::HashMap;
 
 
 pub enum Ranks {
-  HighCard,
-  OnePair,
-  TwoPair,
-  ThreeOfAKind,
-  Straight,
-  Flush,
-  FullHouse,
-  FourOfAKind,
-  StraightFlush, // Royal Flush Included
+    HighCard,
+    OnePair,
+    TwoPair,
+    ThreeOfAKind,
+    Straight,
+    Flush,
+    FullHouse,
+    FourOfAKind,
+    StraightFlush, // Royal Flush Included
 }
 
 pub fn get_rank(_card: Vec<Card>) -> Ranks {
@@ -34,84 +34,136 @@ fn is_flush(cards: Vec<Card>) -> Option<Suit> {
     }
 }
 
-fn is_straight(_cards: Vec<Card>) -> Option<Suit> {
-    None
+
+fn is_straight(mut cards: Vec<Card>) -> Option<u8> {
+    cards.sort();
+    cards.reverse();
+    let rank: u8 = cards.first().unwrap().rank;
+    for i in 0..5 {
+        if cards[i].value().contains(&(rank-i as u8)) {
+            continue;
+        } else if cards.len() > 5 {
+            println!("removed a card");
+            cards.remove(0);
+            return is_straight(cards)
+        } else {
+            return None
+        }
+    }
+    return Some(rank)
 }
 
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
+    #[test]
+    fn should_be_a_straight_7_high() {
+        let cards = vec![
+            Card{suit:Suit::Hearts, rank:2}, 
+            Card{suit:Suit::Hearts, rank:7}, 
+            Card{suit:Suit::Hearts, rank:3}, 
+            Card{suit:Suit::Hearts, rank:4}, 
+            Card{suit:Suit::Hearts, rank:5}, 
+            Card{suit:Suit::Hearts, rank:6}
+        ];
+        assert_eq!(is_straight(cards), Some(7));
+    }
+
+    #[test]
+    fn should_be_a_straight_ace_high() {
+        let cards = vec![
+            Card{suit:Suit::Hearts, rank:14}, 
+            Card{suit:Suit::Hearts, rank:13}, 
+            Card{suit:Suit::Hearts, rank:12}, 
+            Card{suit:Suit::Hearts, rank:11}, 
+            Card{suit:Suit::Hearts, rank:10}
+        ];
+        assert_eq!(is_straight(cards), Some(14));
+    }
+
+    #[test]
+    fn should_be_a_straight_five_high() {
+        let cards = vec![
+            Card{suit:Suit::Hearts, rank:14}, 
+            Card{suit:Suit::Hearts, rank:2}, 
+            Card{suit:Suit::Hearts, rank:3}, 
+            Card{suit:Suit::Hearts, rank:4}, 
+            Card{suit:Suit::Hearts, rank:5}
+        ];
+        assert_eq!(is_straight(cards), Some(5));
+    }
+
     #[test]
     fn should_be_a_hearts_flush() {
-      let cards = vec![
-          Card{suit:Suit::Hearts, rank:14}, 
-          Card{suit:Suit::Hearts, rank:10}, 
-          Card{suit:Suit::Hearts, rank:2}, 
-          Card{suit:Suit::Hearts, rank:4}, 
-          Card{suit:Suit::Hearts, rank:6}
-      ];
-      assert_eq!(is_flush(cards), Some(Suit::Hearts));
+        let cards = vec![
+            Card{suit:Suit::Hearts, rank:14}, 
+            Card{suit:Suit::Hearts, rank:10}, 
+            Card{suit:Suit::Hearts, rank:2}, 
+            Card{suit:Suit::Hearts, rank:4}, 
+            Card{suit:Suit::Hearts, rank:6}
+        ];
+        assert_eq!(is_flush(cards), Some(Suit::Hearts));
     }
 
     #[test]
     fn should_be_a_diamonds_flush() {
-      let cards = vec![
-          Card{suit:Suit::Diamonds, rank:14}, 
-          Card{suit:Suit::Diamonds, rank:10}, 
-          Card{suit:Suit::Diamonds, rank:2}, 
-          Card{suit:Suit::Diamonds, rank:4}, 
-          Card{suit:Suit::Diamonds, rank:6}
-      ];
-      assert_eq!(is_flush(cards), Some(Suit::Diamonds));
+        let cards = vec![
+            Card{suit:Suit::Diamonds, rank:14}, 
+            Card{suit:Suit::Diamonds, rank:10}, 
+            Card{suit:Suit::Diamonds, rank:2}, 
+            Card{suit:Suit::Diamonds, rank:4}, 
+            Card{suit:Suit::Diamonds, rank:6}
+        ];
+        assert_eq!(is_flush(cards), Some(Suit::Diamonds));
     }
 
     #[test]
     fn should_be_a_clubs_flush() {
-      let cards = vec![
-          Card{suit:Suit::Clubs, rank:14}, 
-          Card{suit:Suit::Clubs, rank:10}, 
-          Card{suit:Suit::Clubs, rank:2}, 
-          Card{suit:Suit::Clubs, rank:4}, 
-          Card{suit:Suit::Clubs, rank:6}
-      ];
-      assert_eq!(is_flush(cards), Some(Suit::Clubs));
+        let cards = vec![
+            Card{suit:Suit::Clubs, rank:14}, 
+            Card{suit:Suit::Clubs, rank:10}, 
+            Card{suit:Suit::Clubs, rank:2}, 
+            Card{suit:Suit::Clubs, rank:4}, 
+            Card{suit:Suit::Clubs, rank:6}
+        ];
+        assert_eq!(is_flush(cards), Some(Suit::Clubs));
     }
 
     #[test]
     fn should_be_a_spades_flush() {
-      let cards = vec![
-          Card{suit:Suit::Spades, rank:14}, 
-          Card{suit:Suit::Spades, rank:10}, 
-          Card{suit:Suit::Spades, rank:2}, 
-          Card{suit:Suit::Spades, rank:4}, 
-          Card{suit:Suit::Spades, rank:6}
-      ];
-      assert_eq!(is_flush(cards), Some(Suit::Spades));
+        let cards = vec![
+            Card{suit:Suit::Spades, rank:14}, 
+            Card{suit:Suit::Spades, rank:10}, 
+            Card{suit:Suit::Spades, rank:2}, 
+            Card{suit:Suit::Spades, rank:4}, 
+            Card{suit:Suit::Spades, rank:6}
+        ];
+        assert_eq!(is_flush(cards), Some(Suit::Spades));
     }
 
     #[test]
     fn should_not_be_a_flush_1() {
-      let cards = vec![
-          Card{suit:Suit::Spades, rank:14}, 
-          Card{suit:Suit::Hearts, rank:10}, 
-          Card{suit:Suit::Spades, rank:2}, 
-          Card{suit:Suit::Spades, rank:4}, 
-          Card{suit:Suit::Spades, rank:6}
-      ];
-      assert_eq!(is_flush(cards), None);
+        let cards = vec![
+            Card{suit:Suit::Spades, rank:14}, 
+            Card{suit:Suit::Hearts, rank:10}, 
+            Card{suit:Suit::Spades, rank:2}, 
+            Card{suit:Suit::Spades, rank:4}, 
+            Card{suit:Suit::Spades, rank:6}
+        ];
+        assert_eq!(is_flush(cards), None);
     }
 
     #[test]
     fn should_not_be_a_flush_2() {
-      let cards = vec![
-          Card{suit:Suit::Hearts, rank:5}, 
-          Card{suit:Suit::Hearts, rank:2}, 
-          Card{suit:Suit::Clubs, rank:5}, 
-          Card{suit:Suit::Clubs, rank:2}, 
-          Card{suit:Suit::Diamonds, rank:5}
-      ];
-      assert_eq!(is_flush(cards), None);
+        let cards = vec![
+            Card{suit:Suit::Hearts, rank:5}, 
+            Card{suit:Suit::Hearts, rank:2}, 
+            Card{suit:Suit::Clubs, rank:5}, 
+            Card{suit:Suit::Clubs, rank:2}, 
+            Card{suit:Suit::Diamonds, rank:5}
+        ];
+        assert_eq!(is_flush(cards), None);
     }
 }

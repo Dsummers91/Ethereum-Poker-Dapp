@@ -1,11 +1,13 @@
 use std::fmt::{Display, Formatter, Result};
 use std::slice::Iter;
 use std::hash::{Hash};
+use std::cmp::Ordering;
 
-#[derive(Debug)]
+
+#[derive(Debug, Eq)]
 pub struct Card {
-  pub suit: Suit,
-  pub rank: u8
+  pub rank: u8,
+  pub suit: Suit
 }
 
 #[derive(Clone, Debug, Hash, PartialEq, Eq)]
@@ -31,13 +33,23 @@ impl Suit {
       }
     }
 }
+impl Ord for Card {
+    fn cmp(&self,  other: &Card) -> Ordering {
+        self.rank.cmp(&other.rank)
+    }
+}
+
+impl PartialOrd for Card {
+    fn partial_cmp(&self,  other: &Card) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
 
 impl PartialEq for Card {
     fn eq(&self, other: &Card) -> bool {
         self.rank == other.rank
     }
 }
-
 
 impl Display for Card {
   fn fmt(self: &Card, f: &mut Formatter) -> Result {
