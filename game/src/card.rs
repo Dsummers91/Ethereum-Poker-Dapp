@@ -78,7 +78,7 @@ impl Card {
     Card{rank, suit}
   }
 
-  pub fn value(self: &Card) -> Vec<u8> {
+  pub fn rank(self: &Card) -> Vec<u8> {
     if self.rank != 14 {
       vec![self.rank]
     } else {
@@ -122,20 +122,20 @@ mod tests {
     }
 
     #[test]
-    fn deuce_should_have_value_of_2() {
+    fn deuce_should_have_rank_of_2() {
       let card = Card{suit:Suit::Hearts, rank:2};
-      assert_eq!(card.value(), vec![2]);
+      assert_eq!(card.rank(), vec![2]);
     }
 
     #[test]
-    fn ace_should_have_value_if_1_or_14() {
+    fn ace_should_have_rank_if_1_or_14() {
       let card = Card{suit:Suit::Hearts, rank:14};
-      assert_eq!(card.value(), vec![1, 14]);
+      assert_eq!(card.rank(), vec![1, 14]);
     }
 
     #[test]
-    fn king_should_have_value_if_13() {
+    fn king_should_have_rank_if_13() {
       let card = Card{suit:Suit::Hearts, rank:13};
-      assert_eq!(card.value(), vec![13]);
+      assert_eq!(card.rank(), vec![13]);
     }
 }

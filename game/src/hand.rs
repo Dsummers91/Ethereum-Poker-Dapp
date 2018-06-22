@@ -9,13 +9,13 @@ impl Hand where Card: std::fmt::Debug {
     Hand(cards)
   }
 
-  pub fn values(self: &Hand) -> Vec<u8> {
+  pub fn ranks(self: &Hand) -> Vec<u8> {
     let cards = &self.0;
-    let mut values: Vec<u8> = Vec::new();
+    let mut ranks: Vec<u8> = Vec::new();
     for card in cards.iter() {
-        values.append(&mut card.value());
+        ranks.append(&mut card.rank());
     }
-    values
+    ranks
   }
 
   pub fn len(&self) -> usize {
@@ -34,7 +34,7 @@ mod tests {
   }
 
   #[test]
-  fn should_give_values() {
+  fn should_give_ranks() {
     let hand: Hand = Hand::new(vec![
       Card{suit:Suit::Hearts, rank:14}, 
       Card{suit:Suit::Diamonds, rank:2}, 
@@ -42,7 +42,7 @@ mod tests {
       Card{suit:Suit::Hearts, rank:7}, 
       Card{suit:Suit::Hearts, rank:10}
     ]);
-    assert_eq!(hand.values(), vec![1,14,2,3,7,10])
+    assert_eq!(hand.ranks(), vec![1,14,2,3,7,10])
   }
 
   #[test]

@@ -20,8 +20,7 @@ pub fn get_rank(_card: Hand) -> Ranks {
 }
 
 // Should return flush
-fn is_flush(hand: Hand) -> Option<Suit> {
-    let mut cards = hand.0;
+fn is_flush(cards: Vec<Card>) -> Option<Suit> {
     let mut suits: HashMap<Suit, u8>  = HashMap::new();
     for card in cards {
         let number = suits.entry(card.suit).or_insert(0);
@@ -37,21 +36,20 @@ fn is_flush(hand: Hand) -> Option<Suit> {
 }
 
 
-fn is_straight(mut hand: Hand) -> Option<u8> {
-    let mut cards = hand.0;
+fn is_straight(mut cards: Vec<u8>) -> Option<u8> {
     cards.sort();
-    let rank: u8 = cards.first().unwrap().rank;
+    let rank: u8 = *cards.last().unwrap();
     for i in 0..5 {
-        if cards[i].value().contains(&(rank+i as u8)) {
+        if cards.contains(&(rank-i as u8)) {
             continue;
         } else if cards.len() > 5 {
-            cards.remove(0);
-            return is_straight(Hand::new(cards.to_vec()))
+            cards.pop();
+            return is_straight(cards)
         } else {
             return None
         }
     }
-    return Some(rank+5)
+    return Some(rank)
 }
 
 
@@ -69,7 +67,8 @@ mod tests {
             Card{suit:Suit::Hearts, rank:5}, 
             Card{suit:Suit::Hearts, rank:6}
         ];
-        assert_eq!(is_straight(Hand::new(cards)), Some(7));
+        let hand = Hand::new(cards);
+        assert_eq!(is_straight(hand.ranks()), Some(7));
     }
 
     #[test]
@@ -81,7 +80,8 @@ mod tests {
             Card{suit:Suit::Hearts, rank:11}, 
             Card{suit:Suit::Hearts, rank:10}
         ];
-        assert_eq!(is_straight(Hand::new(cards)), Some(14));
+        let hand = Hand::new(cards);
+        assert_eq!(is_straight(hand.ranks()), Some(14));
     }
 
     #[test]
@@ -93,7 +93,8 @@ mod tests {
             Card{suit:Suit::Hearts, rank:4}, 
             Card{suit:Suit::Hearts, rank:5}
         ];
-        assert_eq!(is_straight(Hand::new(cards)), Some(5));
+        let hand = Hand::new(cards);
+        assert_eq!(is_straight(hand.ranks()), Some(5));
     }
 
     #[test]
@@ -105,7 +106,7 @@ mod tests {
             Card{suit:Suit::Hearts, rank:4}, 
             Card{suit:Suit::Hearts, rank:6}
         ];
-        assert_eq!(is_flush(Hand::new(cards)), Some(Suit::Hearts));
+        assert_eq!(is_flush(cards), Some(Suit::Hearts));
     }
 
     #[test]
@@ -117,7 +118,7 @@ mod tests {
             Card{suit:Suit::Diamonds, rank:4}, 
             Card{suit:Suit::Diamonds, rank:6}
         ];
-        assert_eq!(is_flush(Hand::new(cards)), Some(Suit::Diamonds));
+        assert_eq!(is_flush(cards), Some(Suit::Diamonds));
     }
 
     #[test]
@@ -129,7 +130,7 @@ mod tests {
             Card{suit:Suit::Clubs, rank:4}, 
             Card{suit:Suit::Clubs, rank:6}
         ];
-        assert_eq!(is_flush(Hand::new(cards)), Some(Suit::Clubs));
+        assert_eq!(is_flush(cards), Some(Suit::Clubs));
     }
 
     #[test]
@@ -141,7 +142,7 @@ mod tests {
             Card{suit:Suit::Spades, rank:4}, 
             Card{suit:Suit::Spades, rank:6}
         ];
-        assert_eq!(is_flush(Hand::new(cards)), Some(Suit::Spades));
+        assert_eq!(is_flush(cards), Some(Suit::Spades));
     }
 
     #[test]
@@ -153,7 +154,7 @@ mod tests {
             Card{suit:Suit::Spades, rank:4}, 
             Card{suit:Suit::Spades, rank:6}
         ];
-        assert_eq!(is_flush(Hand::new(cards)), None);
+        assert_eq!(is_flush(cards), None);
     }
 
     #[test]
@@ -165,7 +166,7 @@ mod tests {
             Card{suit:Suit::Clubs, rank:2}, 
             Card{suit:Suit::Diamonds, rank:5}
         ];
-        assert_eq!(is_flush(Hand::new(cards)), None);
+        assert_eq!(is_flush(cards), None);
     }
 
 
