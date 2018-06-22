@@ -41,7 +41,7 @@ impl Ord for Card {
 
 impl PartialOrd for Card {
     fn partial_cmp(&self,  other: &Card) -> Option<Ordering> {
-        Some(self.cmp(other))
+        Some(self.cmp(other).reverse())
     }
 }
 
@@ -82,7 +82,7 @@ impl Card {
     if self.rank != 14 {
       vec![self.rank]
     } else {
-      vec![1, 14]
+      vec![14, 1]
     }
   }
 }
@@ -130,7 +130,7 @@ mod tests {
     #[test]
     fn ace_should_have_rank_if_1_or_14() {
       let card = Card{suit:Suit::Hearts, rank:14};
-      assert_eq!(card.rank(), vec![1, 14]);
+      assert_eq!(card.rank(), vec![14, 1]);
     }
 
     #[test]
