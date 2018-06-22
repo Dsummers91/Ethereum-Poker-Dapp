@@ -20,12 +20,7 @@ pub fn get_rank(_card: Hand) -> Ranks {
 }
 
 // Should return flush
-fn is_flush(cards: Vec<Card>) -> Option<Suit> {
-    let mut suits: HashMap<Suit, u8>  = HashMap::new();
-    for card in cards {
-        let number = suits.entry(card.suit).or_insert(0);
-        *number += 1;
-    }
+fn is_flush(suits: HashMap<Suit, u8>) -> Option<Suit> {
     match suits {
         _ if *suits.get(&Suit::Spades).unwrap_or(&0) >= 5 => Some(Suit::Spades),
         _ if *suits.get(&Suit::Clubs).unwrap_or(&0) >= 5 => Some(Suit::Clubs),
@@ -106,7 +101,8 @@ mod tests {
             Card{suit:Suit::Hearts, rank:4}, 
             Card{suit:Suit::Hearts, rank:6}
         ];
-        assert_eq!(is_flush(cards), Some(Suit::Hearts));
+        let hand = Hand::new(cards);
+        assert_eq!(is_flush(hand.suits()), Some(Suit::Hearts));
     }
 
     #[test]
@@ -118,7 +114,8 @@ mod tests {
             Card{suit:Suit::Diamonds, rank:4}, 
             Card{suit:Suit::Diamonds, rank:6}
         ];
-        assert_eq!(is_flush(cards), Some(Suit::Diamonds));
+        let hand = Hand::new(cards);
+        assert_eq!(is_flush(hand.suits()), Some(Suit::Diamonds));
     }
 
     #[test]
@@ -130,7 +127,8 @@ mod tests {
             Card{suit:Suit::Clubs, rank:4}, 
             Card{suit:Suit::Clubs, rank:6}
         ];
-        assert_eq!(is_flush(cards), Some(Suit::Clubs));
+        let hand = Hand::new(cards);
+        assert_eq!(is_flush(hand.suits()), Some(Suit::Clubs));
     }
 
     #[test]
@@ -142,7 +140,8 @@ mod tests {
             Card{suit:Suit::Spades, rank:4}, 
             Card{suit:Suit::Spades, rank:6}
         ];
-        assert_eq!(is_flush(cards), Some(Suit::Spades));
+        let hand = Hand::new(cards);
+        assert_eq!(is_flush(hand.suits()), Some(Suit::Spades));
     }
 
     #[test]
@@ -154,7 +153,8 @@ mod tests {
             Card{suit:Suit::Spades, rank:4}, 
             Card{suit:Suit::Spades, rank:6}
         ];
-        assert_eq!(is_flush(cards), None);
+        let hand = Hand::new(cards);
+        assert_eq!(is_flush(hand.suits()), None);
     }
 
     #[test]
@@ -166,7 +166,8 @@ mod tests {
             Card{suit:Suit::Clubs, rank:2}, 
             Card{suit:Suit::Diamonds, rank:5}
         ];
-        assert_eq!(is_flush(cards), None);
+        let hand = Hand::new(cards);
+        assert_eq!(is_flush(hand.suits()), None);
     }
 
 

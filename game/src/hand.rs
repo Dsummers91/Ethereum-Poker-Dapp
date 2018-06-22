@@ -1,4 +1,5 @@
 use card::{Card, Suit};
+use std::collections::HashMap;
 use std;
 
 #[derive(Debug, Eq, PartialEq)]
@@ -9,8 +10,8 @@ impl Hand where Card: std::fmt::Debug {
     Hand(cards)
   }
 
-  pub fn ranks(self: &Hand) -> Vec<u8> {
-    let cards = &self.0;
+  pub fn ranks(self) -> Vec<u8> {
+    let cards = self.0;
     let mut ranks: Vec<u8> = Vec::new();
     for card in cards.iter() {
         ranks.append(&mut card.rank());
@@ -18,8 +19,14 @@ impl Hand where Card: std::fmt::Debug {
     ranks
   }
 
-  pub fn len(&self) -> usize {
-      self.len()
+  pub fn suits(self) -> HashMap<Suit, u8> {
+      let mut suits: HashMap<Suit, u8>  = HashMap::new();
+      let cards = self.0;
+      for card in cards {
+          let number = suits.entry(card.suit).or_insert(0);
+          *number += 1;
+      }
+      suits
   }
 }
 
