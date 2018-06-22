@@ -1,16 +1,15 @@
 use card::{Card};
-//use deck::{Deck};
 use table::{Table};
-//use hand::{Hand};
+use hand::{Hand};
 
 pub struct Player {
-  pub hand: Vec<Card>,
+  pub hand: Hand,
   pub chips: u64,
 }
 
 impl Player {
   fn sit(_table: &mut Table, _seat: u8) {
-
+    
   }
 }
 
