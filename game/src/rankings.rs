@@ -2,7 +2,13 @@ use card::{Card, Suit};
 use hand::{Hand};
 use std::collections::HashMap;
 
+#[derive(PartialEq, Eq, Debug, Clone)]
+pub struct Rank {
+    pub rank: Ranks,
+    pub active_cards: Vec<Card>
+}
 
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub enum Ranks {
     HighCard,
     OnePair,
@@ -15,8 +21,8 @@ pub enum Ranks {
     StraightFlush, // Royal Flush Included
 }
 
-pub fn get_rank(_card: Hand) -> Ranks {
-    Ranks::HighCard
+pub fn get_rank(_card: Hand) -> Option<Ranks> {
+    Some(Ranks::HighCard)
 }
 
 // Should return flush

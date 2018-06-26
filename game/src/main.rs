@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 
 extern crate rand;
 
@@ -8,6 +7,7 @@ mod deck;
 mod table;
 mod hand;
 mod rankings;
+mod game_types;
 
 use card::{Card};
 use deck::{Deck};
