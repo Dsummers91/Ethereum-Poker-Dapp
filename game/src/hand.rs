@@ -4,13 +4,13 @@ use std::collections::HashMap;
 use std;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct Hand {
-   pub cards: Vec<Card>,
+pub struct Hand<'a> {
+   pub cards: Vec<&'a Card>,
    value: Option<Rank>
 }
 
-impl Hand where Card: std::fmt::Debug {
-  pub fn new(mut cards: Vec<Card>) -> Hand {
+impl<'a> Hand<'a> {
+  pub fn new(mut cards: Vec<&'a Card>) -> Hand {
     Hand{cards, value: None}
   }
 
@@ -32,10 +32,9 @@ impl Hand where Card: std::fmt::Debug {
     ranks
   }
 
-  pub fn suits(self) -> HashMap<Suit, u8> {
+  pub fn suits(&self) -> HashMap<Suit, u8> {
       let mut suits: HashMap<Suit, u8>  = HashMap::new();
-      let cards = self.cards;
-      for card in cards {
+      for card in self.cards {
           let number = suits.entry(card.suit).or_insert(0);
           *number += 1;
       }
@@ -49,18 +48,19 @@ mod tests {
   use super::Suit;
   #[test]
   fn should_create_a_hand() {
-    let hand: Hand = Hand::new(vec![Card{suit:Suit::Hearts, rank:2}]);
+    let card: Card = Card{suit:Suit::Hearts, rank:2};
+    let hand: Hand = Hand::new(vec![&card]);
     assert_eq!(hand, hand)
   }
 
   #[test]
   fn should_give_ranks() {
     let hand: Hand = Hand::new(vec![
-      Card{suit:Suit::Hearts, rank:14}, 
-      Card{suit:Suit::Diamonds, rank:2}, 
-      Card{suit:Suit::Hearts, rank:3}, 
-      Card{suit:Suit::Hearts, rank:7}, 
-      Card{suit:Suit::Hearts, rank:10}
+      &Card{suit:Suit::Hearts, rank:14}, 
+      &Card{suit:Suit::Diamonds, rank:2}, 
+      &Card{suit:Suit::Hearts, rank:3}, 
+      &Card{suit:Suit::Hearts, rank:7}, 
+      &Card{suit:Suit::Hearts, rank:10}
     ]);
     assert_eq!(hand.ranks(), vec![14, 1, 10, 7, 3, 2])
   }
@@ -68,11 +68,11 @@ mod tests {
   #[test]
   fn should_create_a_pair() {
     let mut hand: Hand = Hand::new(vec![
-      Card{suit:Suit::Hearts, rank:2}, 
-      Card{suit:Suit::Diamonds, rank:2}, 
-      Card{suit:Suit::Hearts, rank:4}, 
-      Card{suit:Suit::Hearts, rank:5}, 
-      Card{suit:Suit::Hearts, rank:8}
+      &Card{suit:Suit::Hearts, rank:2}, 
+      &Card{suit:Suit::Diamonds, rank:2}, 
+      &Card{suit:Suit::Hearts, rank:4}, 
+      &Card{suit:Suit::Hearts, rank:5}, 
+      &Card{suit:Suit::Hearts, rank:8}
     ]);
     hand.get_value();
     assert_eq!(hand.value.unwrap().rank, Ranks::OnePair)

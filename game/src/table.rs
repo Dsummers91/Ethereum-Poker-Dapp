@@ -3,19 +3,19 @@ use game_types::{GameTypes};
 use deck::{Deck};
 use player::{Player};
 
-pub struct Table<'a, 'b, 'c : 'b> {
+pub struct Table<'a, 'b, 'c : 'b, 'd : 'c, T : 'd> {
     game: GameTypes,
     deck: &'a mut Vec<Card>,
-    players:&'b mut [Option<&'c mut Player>]
+    players:&'b mut [Option<&'c mut Player<'d, T>>]
 }
 
 
-impl<'a, 'b, 'c> Table<'a, 'b, 'c> {
+impl<'a, 'b, 'c, 'd> Table<'a, 'b, 'c, 'd, T> {
     pub fn new(
         game: GameTypes, 
         deck: &'a mut Vec<Card>, 
-        players: &'b mut[Option<&'c mut Player>], 
-        seats: usize) -> Table<'a, 'b, 'c> {
+        players: &'b mut[Option<&'c mut Player<'d, T>>], 
+        seats: usize) -> Table<'a, 'b, 'c, 'd, T> {
         Table{game, deck, players}
     }
 }
