@@ -120,257 +120,257 @@ mod tests {
 
     #[test]
     fn should_be_a_pair_of_deuces() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:2}, 
-            Card{suit:Suit::Hearts, rank:2}, 
-            Card{suit:Suit::Hearts, rank:3}, 
-            Card{suit:Suit::Hearts, rank:5}, 
-            Card{suit:Suit::Hearts, rank:7}, 
-            Card{suit:Suit::Hearts, rank:6}
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:2}, 
+            &Card{suit:Suit::Hearts, rank:2}, 
+            &Card{suit:Suit::Hearts, rank:3}, 
+            &Card{suit:Suit::Hearts, rank:5}, 
+            &Card{suit:Suit::Hearts, rank:7}, 
+            &Card{suit:Suit::Hearts, rank:6}
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_pair(hand.ranks()), Some(2));
     }
 
     #[test]
     fn should_not_be_a_fullhouse() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:14}, 
-            Card{suit:Suit::Hearts, rank:14}, 
-            Card{suit:Suit::Hearts, rank:14}, 
-            Card{suit:Suit::Hearts, rank:5}, 
-            Card{suit:Suit::Hearts, rank:3} 
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:14}, 
+            &Card{suit:Suit::Hearts, rank:14}, 
+            &Card{suit:Suit::Hearts, rank:14}, 
+            &Card{suit:Suit::Hearts, rank:5}, 
+            &Card{suit:Suit::Hearts, rank:3} 
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_full_house(hand.ranks()), None);
     }
 
     #[test]
     fn should_be_two_pair_5_and_10() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:5}, 
-            Card{suit:Suit::Hearts, rank:9}, 
-            Card{suit:Suit::Hearts, rank:10}, 
-            Card{suit:Suit::Hearts, rank:5}, 
-            Card{suit:Suit::Hearts, rank:10} 
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:5}, 
+            &Card{suit:Suit::Hearts, rank:9}, 
+            &Card{suit:Suit::Hearts, rank:10}, 
+            &Card{suit:Suit::Hearts, rank:5}, 
+            &Card{suit:Suit::Hearts, rank:10} 
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_two_pair(hand.ranks()), Some([10, 5]));
     }
 
     #[test]
     fn should_be_a_fullhouse_3_over_2() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:3}, 
-            Card{suit:Suit::Hearts, rank:3}, 
-            Card{suit:Suit::Hearts, rank:2}, 
-            Card{suit:Suit::Hearts, rank:2}, 
-            Card{suit:Suit::Hearts, rank:3} 
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:3}, 
+            &Card{suit:Suit::Hearts, rank:3}, 
+            &Card{suit:Suit::Hearts, rank:2}, 
+            &Card{suit:Suit::Hearts, rank:2}, 
+            &Card{suit:Suit::Hearts, rank:3} 
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_full_house(hand.ranks()), Some([3, 2]));
     }
 
     #[test]
     fn should_be_a_three_of_a_kind_queens() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:12}, 
-            Card{suit:Suit::Hearts, rank:4}, 
-            Card{suit:Suit::Hearts, rank:6}, 
-            Card{suit:Suit::Hearts, rank:12}, 
-            Card{suit:Suit::Hearts, rank:7}, 
-            Card{suit:Suit::Hearts, rank:12}
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:12}, 
+            &Card{suit:Suit::Hearts, rank:4}, 
+            &Card{suit:Suit::Hearts, rank:6}, 
+            &Card{suit:Suit::Hearts, rank:12}, 
+            &Card{suit:Suit::Hearts, rank:7}, 
+            &Card{suit:Suit::Hearts, rank:12}
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_three_of_a_kind(hand.ranks()), Some(12));
     }
 
     #[test]
     fn should_be_a_four_of_a_kind_9() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:9}, 
-            Card{suit:Suit::Hearts, rank:9}, 
-            Card{suit:Suit::Hearts, rank:9}, 
-            Card{suit:Suit::Hearts, rank:9}, 
-            Card{suit:Suit::Hearts, rank:2} 
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:9}, 
+            &Card{suit:Suit::Hearts, rank:9}, 
+            &Card{suit:Suit::Hearts, rank:9}, 
+            &Card{suit:Suit::Hearts, rank:9}, 
+            &Card{suit:Suit::Hearts, rank:2} 
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_four_of_a_kind(hand.ranks()), Some(9));
     }
 
     #[test]
     fn should_be_a_straight_7_high() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:2}, 
-            Card{suit:Suit::Hearts, rank:7}, 
-            Card{suit:Suit::Hearts, rank:3}, 
-            Card{suit:Suit::Hearts, rank:4}, 
-            Card{suit:Suit::Hearts, rank:5}, 
-            Card{suit:Suit::Hearts, rank:9}, 
-            Card{suit:Suit::Hearts, rank:6}
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:2}, 
+            &Card{suit:Suit::Hearts, rank:7}, 
+            &Card{suit:Suit::Hearts, rank:3}, 
+            &Card{suit:Suit::Hearts, rank:4}, 
+            &Card{suit:Suit::Hearts, rank:5}, 
+            &Card{suit:Suit::Hearts, rank:9}, 
+            &Card{suit:Suit::Hearts, rank:6}
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_straight(hand.ranks()), Some(7));
     }
 
     #[test]
     fn should_be_a_straight_ace_high() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:14}, 
-            Card{suit:Suit::Hearts, rank:13}, 
-            Card{suit:Suit::Hearts, rank:12}, 
-            Card{suit:Suit::Hearts, rank:11}, 
-            Card{suit:Suit::Hearts, rank:10}
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:14}, 
+            &Card{suit:Suit::Hearts, rank:13}, 
+            &Card{suit:Suit::Hearts, rank:12}, 
+            &Card{suit:Suit::Hearts, rank:11}, 
+            &Card{suit:Suit::Hearts, rank:10}
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_straight(hand.ranks()), Some(14));
     }
 
     #[test]
     fn should_be_a_straight_five_high() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:14}, 
-            Card{suit:Suit::Hearts, rank:2}, 
-            Card{suit:Suit::Hearts, rank:3}, 
-            Card{suit:Suit::Hearts, rank:4}, 
-            Card{suit:Suit::Hearts, rank:5}
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:14}, 
+            &Card{suit:Suit::Hearts, rank:2}, 
+            &Card{suit:Suit::Hearts, rank:3}, 
+            &Card{suit:Suit::Hearts, rank:4}, 
+            &Card{suit:Suit::Hearts, rank:5}
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_straight(hand.ranks()), Some(5));
     }
 
     #[test]
     fn should_be_a_hearts_flush() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:14}, 
-            Card{suit:Suit::Hearts, rank:10}, 
-            Card{suit:Suit::Hearts, rank:2}, 
-            Card{suit:Suit::Hearts, rank:4}, 
-            Card{suit:Suit::Hearts, rank:6}
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:14}, 
+            &Card{suit:Suit::Hearts, rank:10}, 
+            &Card{suit:Suit::Hearts, rank:2}, 
+            &Card{suit:Suit::Hearts, rank:4}, 
+            &Card{suit:Suit::Hearts, rank:6}
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_flush(hand.suits()), Some(Suit::Hearts));
     }
 
     #[test]
     fn should_be_a_straight_flush_five_high() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:5}, 
-            Card{suit:Suit::Hearts, rank:2}, 
-            Card{suit:Suit::Hearts, rank:3}, 
-            Card{suit:Suit::Hearts, rank:14}, 
-            Card{suit:Suit::Hearts, rank:4}
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:5}, 
+            &Card{suit:Suit::Hearts, rank:2}, 
+            &Card{suit:Suit::Hearts, rank:3}, 
+            &Card{suit:Suit::Hearts, rank:14}, 
+            &Card{suit:Suit::Hearts, rank:4}
         ];
-        let hand = Hand::new(cards);
-        let clone = hand.clone();
+        let mut hand = Hand::new(cards);
+        let mut clone = hand.clone();
         assert_eq!(is_straight_flush(hand.ranks(), clone.suits()), Some(5));
     }
 
     #[test]
     fn should_be_a_straight_flush_ace_high() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:14}, 
-            Card{suit:Suit::Hearts, rank:13}, 
-            Card{suit:Suit::Hearts, rank:12}, 
-            Card{suit:Suit::Hearts, rank:10}, 
-            Card{suit:Suit::Hearts, rank:11}
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:14}, 
+            &Card{suit:Suit::Hearts, rank:13}, 
+            &Card{suit:Suit::Hearts, rank:12}, 
+            &Card{suit:Suit::Hearts, rank:10}, 
+            &Card{suit:Suit::Hearts, rank:11}
         ];
-        let hand = Hand::new(cards);
-        let clone = hand.clone();
+        let mut hand = Hand::new(cards);
+        let mut clone = hand.clone();
         assert_eq!(is_straight_flush(hand.ranks(), clone.suits()), Some(14));
     }
 
     #[test]
     fn should_be_a_straight_flush_jack_high() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:7}, 
-            Card{suit:Suit::Hearts, rank:8}, 
-            Card{suit:Suit::Hearts, rank:9}, 
-            Card{suit:Suit::Hearts, rank:10}, 
-            Card{suit:Suit::Hearts, rank:11}
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:7}, 
+            &Card{suit:Suit::Hearts, rank:8}, 
+            &Card{suit:Suit::Hearts, rank:9}, 
+            &Card{suit:Suit::Hearts, rank:10}, 
+            &Card{suit:Suit::Hearts, rank:11}
         ];
-        let hand = Hand::new(cards);
-        let clone = hand.clone();
+        let mut hand = Hand::new(cards);
+        let mut clone = hand.clone();
         assert_eq!(is_straight_flush(hand.ranks(), clone.suits()), Some(11));
     }
 
     #[test]
     fn should_not_be_a_straight_flush() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:2}, 
-            Card{suit:Suit::Hearts, rank:3}, 
-            Card{suit:Suit::Hearts, rank:4}, 
-            Card{suit:Suit::Hearts, rank:5}, 
-            Card{suit:Suit::Diamonds, rank:6}, 
-            Card{suit:Suit::Hearts, rank:7}
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:2}, 
+            &Card{suit:Suit::Hearts, rank:3}, 
+            &Card{suit:Suit::Hearts, rank:4}, 
+            &Card{suit:Suit::Hearts, rank:5}, 
+            &Card{suit:Suit::Diamonds, rank:6}, 
+            &Card{suit:Suit::Hearts, rank:7}
         ];
-        let hand = Hand::new(cards);
-        let clone = hand.clone();
+        let mut hand = Hand::new(cards);
+        let mut clone = hand.clone();
         assert_eq!(is_straight_flush(hand.ranks(), clone.suits()), None);
     }
 
     #[test]
     fn should_be_a_diamonds_flush() {
-        let cards = vec![
-            Card{suit:Suit::Diamonds, rank:14}, 
-            Card{suit:Suit::Diamonds, rank:10}, 
-            Card{suit:Suit::Diamonds, rank:2}, 
-            Card{suit:Suit::Diamonds, rank:4}, 
-            Card{suit:Suit::Diamonds, rank:6}
+        let mut cards = &[
+            &Card{suit:Suit::Diamonds, rank:14}, 
+            &Card{suit:Suit::Diamonds, rank:10}, 
+            &Card{suit:Suit::Diamonds, rank:2}, 
+            &Card{suit:Suit::Diamonds, rank:4}, 
+            &Card{suit:Suit::Diamonds, rank:6}
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_flush(hand.suits()), Some(Suit::Diamonds));
     }
 
     #[test]
     fn should_be_a_clubs_flush() {
-        let cards = vec![
-            Card{suit:Suit::Clubs, rank:14}, 
-            Card{suit:Suit::Clubs, rank:10}, 
-            Card{suit:Suit::Clubs, rank:2}, 
-            Card{suit:Suit::Clubs, rank:4}, 
-            Card{suit:Suit::Clubs, rank:6}
+        let mut cards = &[
+            &Card{suit:Suit::Clubs, rank:14}, 
+            &Card{suit:Suit::Clubs, rank:10}, 
+            &Card{suit:Suit::Clubs, rank:2}, 
+            &Card{suit:Suit::Clubs, rank:4}, 
+            &Card{suit:Suit::Clubs, rank:6}
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_flush(hand.suits()), Some(Suit::Clubs));
     }
 
     #[test]
     fn should_be_a_spades_flush() {
-        let cards = vec![
-            Card{suit:Suit::Spades, rank:14}, 
-            Card{suit:Suit::Spades, rank:10}, 
-            Card{suit:Suit::Spades, rank:2}, 
-            Card{suit:Suit::Spades, rank:4}, 
-            Card{suit:Suit::Spades, rank:6}
+        let mut cards = &[
+            &Card{suit:Suit::Spades, rank:14}, 
+            &Card{suit:Suit::Spades, rank:10}, 
+            &Card{suit:Suit::Spades, rank:2}, 
+            &Card{suit:Suit::Spades, rank:4}, 
+            &Card{suit:Suit::Spades, rank:6}
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_flush(hand.suits()), Some(Suit::Spades));
     }
 
     #[test]
     fn should_not_be_a_flush_1() {
-        let cards = vec![
-            Card{suit:Suit::Spades, rank:14}, 
-            Card{suit:Suit::Hearts, rank:10}, 
-            Card{suit:Suit::Spades, rank:2}, 
-            Card{suit:Suit::Spades, rank:4}, 
-            Card{suit:Suit::Spades, rank:6}
+        let mut cards = &[
+            &Card{suit:Suit::Spades, rank:14}, 
+            &Card{suit:Suit::Hearts, rank:10}, 
+            &Card{suit:Suit::Spades, rank:2}, 
+            &Card{suit:Suit::Spades, rank:4}, 
+            &Card{suit:Suit::Spades, rank:6}
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_flush(hand.suits()), None);
     }
 
     #[test]
     fn should_not_be_a_flush_2() {
-        let cards = vec![
-            Card{suit:Suit::Hearts, rank:5}, 
-            Card{suit:Suit::Hearts, rank:2}, 
-            Card{suit:Suit::Clubs, rank:5}, 
-            Card{suit:Suit::Clubs, rank:2}, 
-            Card{suit:Suit::Diamonds, rank:5}
+        let mut cards = &[
+            &Card{suit:Suit::Hearts, rank:5}, 
+            &Card{suit:Suit::Hearts, rank:2}, 
+            &Card{suit:Suit::Clubs, rank:5}, 
+            &Card{suit:Suit::Clubs, rank:2}, 
+            &Card{suit:Suit::Diamonds, rank:5}
         ];
-        let hand = Hand::new(cards);
+        let mut hand = Hand::new(cards);
         assert_eq!(is_flush(hand.suits()), None);
     }
 

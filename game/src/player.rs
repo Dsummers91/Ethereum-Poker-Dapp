@@ -3,13 +3,9 @@ use table::{Table};
 use hand::{Hand};
 
 #[derive(Debug)]
-pub struct Player {
-  pub hand: Hand,
+pub struct Player<'a> {
+  pub hand: &'a Hand<'a>,
   pub chips: u64,
-}
-
-impl Player {
-    
 }
 
 #[cfg(test)]
