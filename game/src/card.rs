@@ -91,6 +91,24 @@ impl Card {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use super::Suit;
+
+    #[test]
+    fn should_sort_correctly() {
+        let mut cards = vec![
+            &Card{suit:Suit::Spades, rank: 13},
+			&Card{suit:Suit::Diamonds, rank: 12},
+			&Card{suit:Suit::Spades, rank: 14},
+		];
+		let correct_order = vec![
+			&Card{suit:Suit::Spades, rank: 14},
+			&Card{suit:Suit::Diamonds, rank: 13},
+			&Card{suit:Suit::Spades, rank: 12},
+		];
+		cards.sort();
+		assert_eq!(cards, correct_order); 
+	}
+
     #[test]
     fn should_format_correctly() {
       let card = Card{suit:Suit::Spades, rank:14};

@@ -5,7 +5,7 @@ use std::collections::HashMap;
 #[derive(PartialEq, Eq, Debug, Clone)]
 pub struct Rank {
     pub rank: Ranks,
-    pub active_cards: Vec<Card>
+    pub cards: Vec<Card>
 }
 
 #[derive(PartialEq, Eq, Debug, Clone)]
@@ -27,14 +27,21 @@ pub fn get_rank(_card: &Hand) -> Option<Ranks> {
 
 // Should return flush
 fn is_flush(suits: HashMap<Suit, u8>) -> Option<Suit> {
-    match suits {
-        _ if *suits.get(&Suit::Spades).unwrap_or(&0) >= 5 => Some(Suit::Spades),
-        _ if *suits.get(&Suit::Clubs).unwrap_or(&0) >= 5 => Some(Suit::Clubs),
-        _ if *suits.get(&Suit::Hearts).unwrap_or(&0) >= 5 => Some(Suit::Hearts),
-        _ if *suits.get(&Suit::Diamonds).unwrap_or(&0) >= 5 => Some(Suit::Diamonds),
-        _ => None
+    //let suits = hand.cards.suits();
+    if let Some(count_hearts) = suits.get(&Suit::Spades) {
+        if (count_hearts >= &5) {
+            return Some(Suit::Spades) // Some(Rank{Ranks::Flush, cards: vec![]})
+        }
     }
+    None
 }
+
+fn get_flush(hand: Hand, suit: Suit) -> Vec<&Card> {
+    hand.cards.sort();
+    hand.cards.iter().filter(|card| card.suit == suit).take(5).map(|card| *card).collect()
+}
+
+
 
 fn is_straight_flush(mut ranks: Vec<u8>, mut suits: HashMap<Suit, u8>) -> Option<u8> {
     if let Some(x) = is_flush(suits) {
@@ -250,6 +257,28 @@ mod tests {
         ];
         let mut hand = Hand::new(&mut cards);
         assert_eq!(is_flush(hand.suits()), Some(Suit::Hearts));
+    }
+
+    #[test]
+    fn should_return_highest_five_flush() {
+        let mut cards = [
+            &Card{suit:Suit::Hearts, rank:14}, 
+            &Card{suit:Suit::Hearts, rank:10}, 
+            &Card{suit:Suit::Hearts, rank:2}, 
+            &Card{suit:Suit::Hearts, rank:4}, 
+            &Card{suit:Suit::Hearts, rank:8}, 
+            &Card{suit:Suit::Hearts, rank:6}
+        ];
+        let mut hand = Hand::new(&mut cards);
+        let flush = get_flush(hand, Suit::Hearts);
+        let mut high_flush_cards = [
+            &Card{suit:Suit::Hearts, rank:14}, 
+            &Card{suit:Suit::Hearts, rank:10}, 
+            &Card{suit:Suit::Hearts, rank:8}, 
+            &Card{suit:Suit::Hearts, rank:6},
+            &Card{suit:Suit::Hearts, rank:4}, 
+        ];
+        assert_eq!(flush, high_flush_cards);
     }
 
     #[test]

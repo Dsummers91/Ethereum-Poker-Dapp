@@ -16,7 +16,7 @@ impl<'a> Hand<'a> {
 
   pub fn get_value(&mut self) {
     if let Some(x) = get_rank(&self) {
-        self.value = Some(Rank{active_cards: vec![], rank: Ranks::HighCard}); 
+        self.value = Some(Rank{cards: vec![], rank: Ranks::HighCard}); 
     }
   }
 
