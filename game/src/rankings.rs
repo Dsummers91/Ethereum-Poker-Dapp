@@ -28,9 +28,24 @@ pub fn get_rank(_card: &Hand) -> Option<Ranks> {
 // Should return flush
 fn is_flush(suits: HashMap<Suit, u8>) -> Option<Suit> {
     //let suits = hand.cards.suits();
-    if let Some(count_hearts) = suits.get(&Suit::Spades) {
+    if let Some(count_hearts) = suits.get(&Suit::Hearts) {
         if (count_hearts >= &5) {
+            return Some(Suit::Hearts) // Some(Rank{Ranks::Flush, cards: vec![]})
+        }
+    }
+    if let Some(count_diamonds) = suits.get(&Suit::Spades) {
+        if (count_diamonds >= &5) {
+            return Some(Suit::Diamonds) // Some(Rank{Ranks::Flush, cards: vec![]})
+        }
+    }
+    if let Some(count_spades) = suits.get(&Suit::Spades) {
+        if (count_spades >= &5) {
             return Some(Suit::Spades) // Some(Rank{Ranks::Flush, cards: vec![]})
+        }
+    }
+    if let Some(count_clubs) = suits.get(&Suit::Clubs) {
+        if (count_clubs >= &5) {
+            return Some(Suit::Clubs) // Some(Rank{Ranks::Flush, cards: vec![]})
         }
     }
     None
