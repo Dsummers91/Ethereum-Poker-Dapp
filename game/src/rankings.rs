@@ -33,7 +33,7 @@ fn is_flush(hand: &Hand) -> Option<Suit> {
             return Some(Suit::Hearts) // Some(Rank{Ranks::Flush, cards: vec![]})
         }
     }
-    if let Some(count_diamonds) = suits.get(&Suit::Spades) {
+    if let Some(count_diamonds) = suits.get(&Suit::Diamonds) {
         if (count_diamonds >= &5) {
             return Some(Suit::Diamonds) // Some(Rank{Ranks::Flush, cards: vec![]})
         }
