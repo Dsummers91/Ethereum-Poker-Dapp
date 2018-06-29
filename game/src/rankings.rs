@@ -3,9 +3,9 @@ use hand::{Hand};
 use std::collections::HashMap;
 
 #[derive(PartialEq, Eq, Debug, Clone)]
-pub struct Rank {
+pub struct Rank<'a> {
     pub rank: Ranks,
-    pub cards: Vec<Card>
+    pub cards: Vec<&'a Card>
 }
 
 #[derive(PartialEq, Eq, Debug, Clone)]
@@ -26,32 +26,32 @@ pub fn get_rank(_card: &Hand) -> Option<Ranks> {
 }
 
 // Should return flush
-fn is_flush(hand: &Hand) -> Option<Suit> {
+fn is_flush<'a, 'b>(mut hand: &mut Hand<'a, 'b>) -> Option<Rank<'a>> {
     let suits = hand.suits();
     if let Some(count_hearts) = suits.get(&Suit::Hearts) {
         if (count_hearts >= &5) {
-            return Some(Suit::Hearts) // Some(Rank{Ranks::Flush, cards: vec![]})
+            return Some(Rank{rank: Ranks::Flush, cards: get_flush_cards(&mut hand, Suit::Hearts)})
         }
     }
     if let Some(count_diamonds) = suits.get(&Suit::Diamonds) {
         if (count_diamonds >= &5) {
-            return Some(Suit::Diamonds) // Some(Rank{Ranks::Flush, cards: vec![]})
+            return Some(Rank{rank: Ranks::Flush, cards: get_flush_cards(&mut hand, Suit::Diamonds)})
         }
     }
     if let Some(count_spades) = suits.get(&Suit::Spades) {
         if (count_spades >= &5) {
-            return Some(Suit::Spades) // Some(Rank{Ranks::Flush, cards: vec![]})
+            return Some(Rank{rank: Ranks::Flush, cards: get_flush_cards(&mut hand, Suit::Spades)})
         }
     }
     if let Some(count_clubs) = suits.get(&Suit::Clubs) {
         if (count_clubs >= &5) {
-            return Some(Suit::Clubs) // Some(Rank{Ranks::Flush, cards: vec![]})
+            return Some(Rank{rank: Ranks::Flush, cards: get_flush_cards(&mut hand, Suit::Clubs)})
         }
     }
     None
 }
 
-fn get_flush(hand: Hand, suit: Suit) -> Vec<&Card> {
+fn get_flush_cards<'a,'b>(hand: &mut Hand<'a, 'b>, suit: Suit) -> Vec<&'a Card> {
     hand.cards.sort();
     hand.cards.iter().filter(|card| card.suit == suit).take(5).map(|card| *card).collect()
 }
@@ -274,7 +274,14 @@ mod tests {
             &Card{suit:Suit::Hearts, rank:6}
         ];
         let mut hand = Hand::new(&mut cards);
-        assert_eq!(is_flush(&hand), Some(Suit::Hearts));
+        let mut flush_result = is_flush(&mut hand).unwrap();
+        assert_eq!(flush_result.rank, Ranks::Flush);
+        let mut iter = flush_result.cards.iter();
+        assert_eq!(&hand.cards[0], iter.next().unwrap());
+        assert_eq!(&hand.cards[1], iter.next().unwrap());
+        assert_eq!(&hand.cards[2], iter.next().unwrap());
+        assert_eq!(&hand.cards[3], iter.next().unwrap());
+        assert_eq!(&hand.cards[4], iter.next().unwrap());
     }
 
     #[test]
@@ -288,7 +295,7 @@ mod tests {
             &Card{suit:Suit::Hearts, rank:6}
         ];
         let mut hand = Hand::new(&mut cards);
-        let flush = get_flush(hand, Suit::Hearts);
+        let flush = get_flush_cards(&mut hand, Suit::Hearts);
         let mut high_flush_cards = [
             &Card{suit:Suit::Hearts, rank:14}, 
             &Card{suit:Suit::Hearts, rank:10}, 
@@ -309,8 +316,8 @@ mod tests {
             &Card{suit:Suit::Hearts, rank:4}
         ];
         let mut hand = Hand::new(&mut cards);
-        let suits = hand.suits();
-        assert_eq!(is_straight_flush(hand.ranks(), suits), Some(5));
+        let flush_result = is_flush(&mut hand).unwrap();
+        assert_eq!(flush_result.rank, Ranks::Flush);
     }
 
     #[test]
@@ -366,7 +373,8 @@ mod tests {
             &Card{suit:Suit::Diamonds, rank:6}
         ];
         let mut hand = Hand::new(&mut cards);
-        assert_eq!(is_flush(&hand), Some(Suit::Diamonds));
+        let flush_result = is_flush(&mut hand).unwrap();
+        assert_eq!(flush_result.rank, Ranks::Flush);
     }
 
     #[test]
@@ -379,7 +387,8 @@ mod tests {
             &Card{suit:Suit::Clubs, rank:6}
         ];
         let mut hand = Hand::new(&mut cards);
-        assert_eq!(is_flush(&hand), Some(Suit::Clubs));
+        let flush_result = is_flush(&mut hand).unwrap();
+        assert_eq!(flush_result.rank, Ranks::Flush);
     }
 
     #[test]
@@ -392,7 +401,8 @@ mod tests {
             &Card{suit:Suit::Spades, rank:6}
         ];
         let mut hand = Hand::new(&mut cards);
-        assert_eq!(is_flush(&hand), Some(Suit::Spades));
+        let flush_result = is_flush(&mut hand).unwrap();
+        assert_eq!(flush_result.rank, Ranks::Flush);
     }
 
     #[test]
@@ -405,7 +415,8 @@ mod tests {
             &Card{suit:Suit::Spades, rank:6}
         ];
         let mut hand = Hand::new(&mut cards);
-        assert_eq!(is_flush(&hand), None);
+        let flush_result = is_flush(&mut hand);
+        assert_eq!(flush_result, None);
     }
 
     #[test]
@@ -418,7 +429,8 @@ mod tests {
             &Card{suit:Suit::Diamonds, rank:5}
         ];
         let mut hand = Hand::new(&mut cards);
-        assert_eq!(is_flush(&hand), None);
+        let flush_result = is_flush(&mut hand);
+        assert_eq!(flush_result, None);
     }
 
 

@@ -4,13 +4,13 @@ use std::collections::HashMap;
 use std;
 
 #[derive(Debug, Eq, PartialEq)]
-pub struct Hand<'a> {
+pub struct Hand<'a, 'b> {
    pub cards: &'a mut[&'a Card],
-   value: Option<Rank>
+   value: Option<Rank<'b>>
 }
 
-impl<'a> Hand<'a> {
-  pub fn new(cards: &'a mut [&'a Card]) -> Hand<'a> {
+impl<'a, 'b> Hand<'a, 'b> {
+  pub fn new(cards: &'a mut [&'a Card]) -> Hand<'a, 'b> {
     Hand{cards, value: None}
   }
 

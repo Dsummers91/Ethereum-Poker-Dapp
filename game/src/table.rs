@@ -6,7 +6,7 @@ use player::{Player};
 pub struct Table<'a, 'b, 'c : 'b, 'd : 'c> {
     game: GameTypes,
     deck: &'a mut Vec<Card>,
-    players:&'b mut [Option<&'c mut Player<'d>>]
+    players:&'b mut [Option<&'c mut Player<'d, 'd>>]
 }
 
 
@@ -14,7 +14,7 @@ impl<'a, 'b, 'c, 'd> Table<'a, 'b, 'c, 'd> {
     pub fn new(
         game: GameTypes, 
         deck: &'a mut Vec<Card>, 
-        players: &'b mut[Option<&'c mut Player<'d>>], 
+        players: &'b mut[Option<&'c mut Player<'d, 'd>>], 
         seats: usize) -> Table<'a, 'b, 'c, 'd> {
         Table{game, deck, players}
     }

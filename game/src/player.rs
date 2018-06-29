@@ -3,8 +3,8 @@ use table::{Table};
 use hand::{Hand};
 
 #[derive(Debug)]
-pub struct Player<'a> {
-  pub hand: &'a Hand<'a>,
+pub struct Player<'a, 'b: 'a> {
+  pub hand: &'a Hand<'a, 'b>,
   pub chips: u64,
 }
 
