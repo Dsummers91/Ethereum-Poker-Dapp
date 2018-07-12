@@ -20,12 +20,12 @@ impl<'a, 'b> Hand<'a, 'b> {
     }
   }
 
-  pub fn ranks(&mut self) -> Vec<u8> {
-    self.cards.sort();
+  pub fn ranks(self: &Self) -> Vec<u8> {
     let mut ranks: Vec<u8> = Vec::new();
     for card in self.cards.iter() {
         ranks.append(&mut card.rank());
     }
+    ranks.sort();
     ranks
   }
 

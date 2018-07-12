@@ -68,22 +68,23 @@ fn is_straight_flush(mut ranks: Vec<u8>, mut suits: HashMap<Suit, u8>) -> Option
 }
 
 fn is_straight(mut hand: &Hand) -> Option<u8> {
-    //let mut cards = &hand.cards;
-    //cards.sort();
-    // TODO: This is fucked, use windows(5)
-    //let card = *cards.last().unwrap();
-    //for i in 0..5 {
-    //    if hand.ranks().contains(&(card.rank-i as u8)) {
-    //        continue;
-    //    } else if cards.len() > 5 {
-    //        let mut cards = &mut hand.cards[1..];
-    //        let new_hand = Hand::new(&mut cards);
-    //        return is_straight(&new_hand)
-    //    } else {
-    //        return None
-    //    }
-    //}
-    return None
+	let mut cards = &hand.cards;
+    cards.sort();
+	let mut iter = cards.windows(5);
+	let mut ranks = hand.ranks();
+	for mut hand in iter {
+        let highest_card: u8 = hand.last().unwrap().rank;
+		for i in 0..5 {
+            println!("card: {}, ranks: {:?}", highest_card - i, ranks);
+		    if ranks.contains(&(highest_card - i as u8)) {
+                if i == 5 {
+                    return Some(highest_card)
+                }
+				continue;
+			}
+		}
+	}
+	None
 }
 
 fn is_pair(mut ranks: Vec<u8>) -> Option<u8> {
