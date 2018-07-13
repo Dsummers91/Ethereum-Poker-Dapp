@@ -10,6 +10,28 @@ pub struct Card {
   pub suit: Suit
 }
 
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Cards<'a> (pub Vec<&'a Card>);
+
+impl<'a> Cards<'a> {
+    pub fn ranks(self) -> Vec<u8> {
+        let mut cards: Vec<u8> = vec![];
+        for card in self.0.iter() {
+            cards.push(card.rank)
+        }
+        cards
+    }
+    
+    // Values have Ace = 1 and 14
+    pub fn values(self) -> Vec<u8> {
+        let mut cards: Vec<u8> = vec![];
+        for card in self.0.iter() {
+            cards.push(card.rank)
+        }
+        cards
+    }
+}
+
 #[derive(Clone, Debug, Hash, PartialEq, Eq)]
 pub enum Suit {
   Spades,

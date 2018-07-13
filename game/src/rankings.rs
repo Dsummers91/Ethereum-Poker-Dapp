@@ -1,4 +1,4 @@
-use card::{Card, Suit};
+use card::{Card, Suit, Cards};
 use hand::{Hand};
 use std::collections::HashMap;
 
@@ -86,7 +86,8 @@ fn is_straight(mut hand: &Hand) -> Option<u8> {
     return None
 }
 
-fn is_pair(mut ranks: Vec<u8>) -> Option<u8> {
+fn is_pair(cards: Vec<&Card>) -> Option<u8> {
+    let ranks = Cards(cards).ranks();
     for rank in ranks.windows(2) {
         if rank[0] == rank[1] {
             return Some(rank[0]);
@@ -97,12 +98,12 @@ fn is_pair(mut ranks: Vec<u8>) -> Option<u8> {
 
 fn is_two_pair(mut ranks: Vec<u8>) -> Option<[u8; 2]> {
     let mut leftover_cards = ranks.clone();
-    if let Some(x) = is_pair(ranks) {
-        leftover_cards = leftover_cards.iter().filter(|r| **r != x && **r > 1).cloned().collect();
-        if let Some(y) = is_pair(leftover_cards.to_vec()) {
-            return Some([x, y])
-        }
-    } 
+    //if let Some(x) = is_pair(ranks) {
+    //    leftover_cards = leftover_cards.iter().filter(|r| **r != x && **r > 1).cloned().collect();
+        //if let Some(y) = is_pair(leftover_cards.to_vec()) {
+        //    return Some([x, y])
+        //}
+    //} 
     None
 }
 
@@ -110,9 +111,9 @@ fn is_full_house(mut ranks: Vec<u8>) -> Option<[u8; 2]> {
     let mut leftover_cards = ranks.clone();
     if let Some(x) = is_three_of_a_kind(ranks) {
         leftover_cards = leftover_cards.iter().filter(|r| **r != x && **r > 1).cloned().collect();
-        if let Some(y) = is_pair(leftover_cards.to_vec()) {
-            return Some([x, y])
-        }
+        //if let Some(y) = is_pair(leftover_cards.to_vec()) {
+        //    return Some([x, y])
+        //}
     } 
     None
 }
@@ -154,7 +155,7 @@ mod tests {
             &Card{suit:Suit::Hearts, rank:6}
         ];
         let mut hand = Hand::new(&mut cards);
-        assert_eq!(is_pair(hand.ranks()), Some(2));
+        assert_eq!(is_pair(hand.cards.to_vec()), Some(2));
     }
 
     #[test]
