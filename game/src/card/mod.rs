@@ -1,8 +1,11 @@
+pub mod suit;
+
+
 use std::fmt::{Display, Formatter, Result};
 use std::slice::Iter;
 use std::hash::{Hash};
 use std::cmp::Ordering;
-
+pub use self::suit::Suit;
 
 #[derive(Debug, Eq, Clone)]
 pub struct Card {
@@ -32,29 +35,7 @@ impl<'a> Cards<'a> {
     }
 }
 
-#[derive(Clone, Debug, Hash, PartialEq, Eq)]
-pub enum Suit {
-  Spades,
-  Diamonds,
-  Clubs,
-  Hearts,
-}
 
-impl Suit {
-    pub fn iter() -> Iter<'static, Suit> {
-        static SUITS: [Suit;  4] = [Suit::Spades, Suit::Diamonds, Suit::Clubs, Suit::Hearts];
-        SUITS.into_iter()
-    }
-
-    pub fn get_suit(item: &Suit) -> Suit {
-      match item {
-        Suit::Spades => Suit::Spades,
-        Suit::Diamonds => Suit::Diamonds,
-        Suit::Hearts => Suit::Hearts,
-        Suit::Clubs => Suit::Clubs,
-      }
-    }
-}
 impl Ord for Card {
     fn cmp(&self,  other: &Card) -> Ordering {
         self.rank.cmp(&other.rank)
@@ -113,7 +94,7 @@ impl Card {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use super::Suit;
+    use super::suit::Suit;
 
     #[test]
     fn should_sort_correctly() {
