@@ -15,8 +15,8 @@ impl<'a, 'b> Hand<'a, 'b> {
   }
 
   pub fn get_value(&mut self) {
-    if let Some(x) = get_rank(&self) {
-        self.value = Some(Rank{cards: vec![], rank: Ranks::HighCard}); 
+    if let Some(rank) = get_rank(&self) {
+        self.value = Some(Rank{cards: vec![], rank}); 
     }
   }
 
@@ -24,7 +24,7 @@ impl<'a, 'b> Hand<'a, 'b> {
     self.cards.sort();
     let mut ranks: Vec<u8> = Vec::new();
     for card in self.cards.iter() {
-        ranks.append(&mut card.rank());
+        ranks.push(card.rank().first().unwrap().0);
     }
     ranks
   }
@@ -60,7 +60,7 @@ mod tests {
       &Card{suit:Suit::Hearts, rank:10}
     ];
     let mut hand: Hand = Hand::new(&mut cards);
-    assert_eq!(hand.ranks(), vec![14, 1, 10, 7, 3, 2])
+    assert_eq!(hand.ranks(), vec![14, 10, 7, 3, 2])
   }
 
   #[test]

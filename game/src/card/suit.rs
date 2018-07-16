@@ -8,9 +8,10 @@ pub enum Suit {
   Hearts,
 }
 
+pub static SUITS: [Suit;  4] = [Suit::Spades, Suit::Diamonds, Suit::Clubs, Suit::Hearts];
+
 impl Suit {
     pub fn iter() -> Iter<'static, Suit> {
-        static SUITS: [Suit;  4] = [Suit::Spades, Suit::Diamonds, Suit::Clubs, Suit::Hearts];
         SUITS.into_iter()
     }
 
