@@ -8,8 +8,8 @@ This systems is comprised of four parts:
 4. State Channels - State channel contracts
 
 #### Current Implementation Being Worked in (Subject to Change)
- - Each Table is its own plasma chain that users are free to join 
- - Each Plasma Chain hosts a network of state channels. When a new user joins a new channel must be started and users must move funds over to new channel
+ - Each Casino is its own plasma chain that users are free to join 
+ - Each Plasma Chain hosts a network of state channels (tables). When a new user joins a new channel must be started and users must move funds over to new channel (possibly?)
  
 #### Tournament Play
 [ ] Each tournament must have a determistic psuedo-random way to verify and determine player positions throughout tournament.
