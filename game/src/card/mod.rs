@@ -23,13 +23,15 @@ impl<'a> Cards<'a> {
         for card in self.0.iter() {
             cards.push(card.rank)
         }
+        cards.sort();
+        cards.reverse(); // highest cards first
         cards
     }
     
     pub fn lowest_number(&self) -> u8 {
        let cards = self.clone();
        let ranks = cards.ranks();
-       if ranks.contains(&14) {
+       if ranks.contains(&14) && ranks.contains(&2) { // Only need this for straights, so check for a 2
            return 1;
        }
        return self.0.last().unwrap().rank

@@ -29,27 +29,27 @@ pub fn get_rank(_card: &Hand) -> Option<Ranks> {
 }
 
 // Should return flush
-fn is_flush<'a, 'b>(mut h: &mut Hand<'a, 'b>) -> Option<Rank<'a>> {
-    let suits = h.suits();
-    let hand = h.cards.to_vec();
+fn is_flush<'a>(mut cards: Vec<&'a Card>) -> Option<Rank<'a>> {
+    let c = cards.clone();
+    let suits = Cards(c).suits();
     if let Some(count_hearts) = suits.get(&Suit::Hearts) {
         if (count_hearts >= &5) {
-            return Some(Rank{rank: Ranks::Flush, cards: get_flush_hand(hand, Suit::Hearts)})
+            return Some(Rank{rank: Ranks::Flush, cards: get_flush_hand(cards, Suit::Hearts)})
         }
     }
     if let Some(count_diamonds) = suits.get(&Suit::Diamonds) {
         if (count_diamonds >= &5) {
-            return Some(Rank{rank: Ranks::Flush, cards: get_flush_hand(hand, Suit::Diamonds)})
+            return Some(Rank{rank: Ranks::Flush, cards: get_flush_hand(cards, Suit::Diamonds)})
         }
     }
     if let Some(count_spades) = suits.get(&Suit::Spades) {
         if (count_spades >= &5) {
-            return Some(Rank{rank: Ranks::Flush, cards: get_flush_hand(hand, Suit::Spades)})
+            return Some(Rank{rank: Ranks::Flush, cards: get_flush_hand(cards, Suit::Spades)})
         }
     }
     if let Some(count_clubs) = suits.get(&Suit::Clubs) {
         if (count_clubs >= &5) {
-            return Some(Rank{rank: Ranks::Flush, cards: get_flush_hand(hand, Suit::Clubs)})
+            return Some(Rank{rank: Ranks::Flush, cards: get_flush_hand(cards, Suit::Clubs)})
         }
     }
     None
@@ -109,9 +109,11 @@ fn is_straight(mut c: Vec<&Card>) -> Option<u8> {
     None
 }
 
-fn is_pair(cards: Vec<&Card>) -> Option<u8> {
+fn is_pair(mut cards: Vec<&Card>) -> Option<u8> {
+    cards.sort();
     let ranks = Cards(cards).ranks();
     for rank in ranks.windows(2) {
+        println!("{:?}", rank);
         if rank[0] == rank[1] {
             return Some(rank[0]);
         }
@@ -120,6 +122,7 @@ fn is_pair(cards: Vec<&Card>) -> Option<u8> {
 }
 
 fn is_two_pair(mut cards: Vec<&Card>) -> Option<[u8; 2]> {
+    cards.sort();
     let mut leftover_cards = cards.clone();
     if let Some(x) = is_pair(cards) {
         leftover_cards = leftover_cards.iter().filter(|r| r.rank != x).cloned().collect();
@@ -130,19 +133,21 @@ fn is_two_pair(mut cards: Vec<&Card>) -> Option<[u8; 2]> {
     None
 }
 
-fn is_full_house(mut ranks: Vec<u8>) -> Option<[u8; 2]> {
-    let mut leftover_cards = ranks.clone();
-    if let Some(x) = is_three_of_a_kind(ranks) {
-        leftover_cards = leftover_cards.iter().filter(|r| **r != x && **r > 1).cloned().collect();
-        //if let Some(y) = is_pair(leftover_cards.to_vec()) {
-        //    return Some([x, y])
-        //}
+fn is_full_house(mut cards: Vec<&Card>) -> Option<[u8; 2]> {
+    let mut leftover_cards = cards.clone();
+    if let Some(x) = is_three_of_a_kind(cards) {
+        leftover_cards = leftover_cards.iter().filter(|r| r.rank != x).cloned().collect();
+        if let Some(y) = is_pair(leftover_cards.to_vec()) {
+            return Some([x, y])
+        }
     } 
     None
 }
 
-fn is_three_of_a_kind(mut ranks: Vec<u8>) -> Option<u8> {
+fn is_three_of_a_kind(mut cards: Vec<&Card>) -> Option<u8> {
+    let ranks = Cards(cards).ranks();
     for rank in ranks.windows(3) {
+        println!("{:?}", rank);
         if rank[0] == rank[1] && rank[0] == rank[2] {
             return Some(rank[0]);
         }
@@ -150,7 +155,8 @@ fn is_three_of_a_kind(mut ranks: Vec<u8>) -> Option<u8> {
     None
 }
 
-fn is_four_of_a_kind(mut ranks: Vec<u8>) -> Option<u8> {
+fn is_four_of_a_kind(mut cards: Vec<&Card>) -> Option<u8> {
+    let ranks = Cards(cards).ranks();
     for rank in ranks.windows(4) {;
         if rank[0] == rank[1] && rank[0] == rank[2] && rank[0] == rank[3] {
             return Some(rank[0]);
@@ -183,15 +189,14 @@ mod tests {
 
     #[test]
     fn should_not_be_a_fullhouse() {
-        let mut cards = [
+        let mut cards = vec![
             &Card{suit:Suit::Hearts, rank:14}, 
             &Card{suit:Suit::Hearts, rank:14}, 
             &Card{suit:Suit::Hearts, rank:14}, 
             &Card{suit:Suit::Hearts, rank:5}, 
             &Card{suit:Suit::Hearts, rank:3} 
         ];
-        let mut hand = Hand::new(&mut cards);
-        assert_eq!(is_full_house(hand.ranks()), None);
+        assert_eq!(is_full_house(cards), None);
     }
 
     #[test]
@@ -208,20 +213,19 @@ mod tests {
 
     #[test]
     fn should_be_a_fullhouse_3_over_2() {
-        let mut cards = [
+        let mut cards = vec![
             &Card{suit:Suit::Hearts, rank:3}, 
             &Card{suit:Suit::Hearts, rank:3}, 
             &Card{suit:Suit::Hearts, rank:2}, 
             &Card{suit:Suit::Hearts, rank:2}, 
             &Card{suit:Suit::Hearts, rank:3} 
         ];
-        let mut hand = Hand::new(&mut cards);
-        assert_eq!(is_full_house(hand.ranks()), Some([3, 2]));
+        assert_eq!(is_full_house(cards), Some([3, 2]));
     }
 
     #[test]
     fn should_be_a_three_of_a_kind_queens() {
-        let mut cards = [
+        let mut cards = vec![
             &Card{suit:Suit::Hearts, rank:12}, 
             &Card{suit:Suit::Hearts, rank:4}, 
             &Card{suit:Suit::Hearts, rank:6}, 
@@ -229,21 +233,19 @@ mod tests {
             &Card{suit:Suit::Hearts, rank:7}, 
             &Card{suit:Suit::Hearts, rank:12}
         ];
-        let mut hand = Hand::new(&mut cards);
-        assert_eq!(is_three_of_a_kind(hand.ranks()), Some(12));
+        assert_eq!(is_three_of_a_kind(cards), Some(12));
     }
 
     #[test]
     fn should_be_a_four_of_a_kind_9() {
-        let mut cards = [
+        let mut cards = vec![
             &Card{suit:Suit::Hearts, rank:9}, 
             &Card{suit:Suit::Hearts, rank:9}, 
             &Card{suit:Suit::Hearts, rank:9}, 
             &Card{suit:Suit::Hearts, rank:9}, 
             &Card{suit:Suit::Hearts, rank:2} 
         ];
-        let mut hand = Hand::new(&mut cards);
-        assert_eq!(is_four_of_a_kind(hand.ranks()), Some(9));
+        assert_eq!(is_four_of_a_kind(cards), Some(9));
     }
 
     #[test]
@@ -289,22 +291,22 @@ mod tests {
 
     #[test]
     fn should_be_a_hearts_flush() {
-        let mut cards = [
+        let mut cards = vec![
             &Card{suit:Suit::Hearts, rank:14}, 
             &Card{suit:Suit::Hearts, rank:10}, 
             &Card{suit:Suit::Hearts, rank:2}, 
             &Card{suit:Suit::Hearts, rank:4}, 
             &Card{suit:Suit::Hearts, rank:6}
         ];
-        let mut hand = Hand::new(&mut cards);
-        let mut flush_result = is_flush(&mut hand).unwrap();
+        let c = cards.clone();
+        let mut flush_result = is_flush(c).unwrap();
         assert_eq!(flush_result.rank, Ranks::Flush);
         let mut iter = flush_result.cards.iter();
-        assert_eq!(&hand.cards[0], iter.next().unwrap());
-        assert_eq!(&hand.cards[1], iter.next().unwrap());
-        assert_eq!(&hand.cards[2], iter.next().unwrap());
-        assert_eq!(&hand.cards[3], iter.next().unwrap());
-        assert_eq!(&hand.cards[4], iter.next().unwrap());
+        assert_eq!(&cards[0], iter.next().unwrap());
+        assert_eq!(&cards[1], iter.next().unwrap());
+        assert_eq!(&cards[4], iter.next().unwrap());
+        assert_eq!(&cards[3], iter.next().unwrap());
+        assert_eq!(&cards[2], iter.next().unwrap());
     }
 
     #[test]
@@ -317,7 +319,8 @@ mod tests {
             &Card{suit:Suit::Hearts, rank:8}, 
             &Card{suit:Suit::Hearts, rank:6}
         ];
-        let flush = get_flush_cards(cards.to_vec(), Suit::Hearts);
+        let c = cards.clone();
+        let mut flush = get_flush_cards(c.to_vec(), Suit::Hearts);
         let mut high_flush_cards = [
             &Card{suit:Suit::Hearts, rank:14}, 
             &Card{suit:Suit::Hearts, rank:10}, 
@@ -325,7 +328,8 @@ mod tests {
             &Card{suit:Suit::Hearts, rank:6},
             &Card{suit:Suit::Hearts, rank:4}, 
         ];
-        assert_eq!(flush, high_flush_cards);
+        flush.sort();
+        assert_eq!(flush[0..5], high_flush_cards);
     }
 
     #[test]
@@ -337,7 +341,8 @@ mod tests {
             &Card{suit:Suit::Hearts, rank:14}, 
             &Card{suit:Suit::Hearts, rank:4}
         ];
-        let flush_result = is_straight_flush(cards.to_vec());
+        let c = cards.clone();
+        let flush_result = is_straight_flush(c.to_vec());
         assert_eq!(flush_result, Some(5));
     }
 
@@ -380,71 +385,66 @@ mod tests {
 
     #[test]
     fn should_be_a_diamonds_flush() {
-        let mut cards = [
+        let mut cards = vec![
             &Card{suit:Suit::Diamonds, rank:14}, 
             &Card{suit:Suit::Diamonds, rank:10}, 
             &Card{suit:Suit::Diamonds, rank:2}, 
             &Card{suit:Suit::Diamonds, rank:4}, 
             &Card{suit:Suit::Diamonds, rank:6}
         ];
-        let mut hand = Hand::new(&mut cards);
-        let flush_result = is_flush(&mut hand).unwrap();
+        let flush_result = is_flush(cards).unwrap();
         assert_eq!(flush_result.rank, Ranks::Flush);
     }
 
     #[test]
     fn should_be_a_clubs_flush() {
-        let mut cards = [
+        let mut cards = vec![
             &Card{suit:Suit::Clubs, rank:14}, 
             &Card{suit:Suit::Clubs, rank:10}, 
             &Card{suit:Suit::Clubs, rank:2}, 
             &Card{suit:Suit::Clubs, rank:4}, 
             &Card{suit:Suit::Clubs, rank:6}
         ];
-        let mut hand = Hand::new(&mut cards);
-        let flush_result = is_flush(&mut hand).unwrap();
+        let flush_result = is_flush(cards).unwrap();
         assert_eq!(flush_result.rank, Ranks::Flush);
     }
 
     #[test]
     fn should_be_a_spades_flush() {
-        let mut cards = [
+        let mut cards = vec![
             &Card{suit:Suit::Spades, rank:14}, 
             &Card{suit:Suit::Spades, rank:10}, 
             &Card{suit:Suit::Spades, rank:2}, 
             &Card{suit:Suit::Spades, rank:4}, 
             &Card{suit:Suit::Spades, rank:6}
         ];
-        let mut hand = Hand::new(&mut cards);
-        let flush_result = is_flush(&mut hand).unwrap();
+        let flush_result = is_flush(cards).unwrap();
         assert_eq!(flush_result.rank, Ranks::Flush);
     }
 
     #[test]
     fn should_not_be_a_flush_1() {
-        let mut cards = [
+        let mut cards = vec![
             &Card{suit:Suit::Spades, rank:14}, 
             &Card{suit:Suit::Hearts, rank:10}, 
             &Card{suit:Suit::Spades, rank:2}, 
             &Card{suit:Suit::Spades, rank:4}, 
             &Card{suit:Suit::Spades, rank:6}
         ];
-        let mut hand = Hand::new(&mut cards);
-        let flush_result = is_flush(&mut hand);
+        let flush_result = is_flush(cards);
         assert_eq!(flush_result, None);
     }
 
     #[test]
     fn should_not_be_a_flush_2() {
-        let mut cards = [
+        let mut cards = vec![
             &Card{suit:Suit::Hearts, rank:5}, 
             &Card{suit:Suit::Hearts, rank:2}, 
             &Card{suit:Suit::Clubs, rank:5}, 
             &Card{suit:Suit::Clubs, rank:2}, 
             &Card{suit:Suit::Diamonds, rank:5}
         ];
-        let mut hand = Hand::new(&mut cards);
-        let flush_result = is_flush(&mut hand);
+        let flush_result = is_flush(cards);
         assert_eq!(flush_result, None);
     }
 
