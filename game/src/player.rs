@@ -1,3 +1,5 @@
+#![allow(dead_code, unused_imports)]
+
 use card::{Card};
 use table::{Table};
 use hand::{Hand};

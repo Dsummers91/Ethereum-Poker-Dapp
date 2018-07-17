@@ -1,6 +1,6 @@
 use std::slice::Iter;
 
-#[derive(Clone, Debug, Hash, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Hash, PartialEq, Eq)]
 pub enum Suit {
   Spades,
   Diamonds,
@@ -15,7 +15,7 @@ impl Suit {
         SUITS.into_iter()
     }
 
-    pub fn get_suit(item: &Suit) -> Suit {
+    pub fn get_suit(item: Suit) -> Suit {
       match item {
         Suit::Spades => Suit::Spades,
         Suit::Diamonds => Suit::Diamonds,

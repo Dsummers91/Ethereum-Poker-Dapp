@@ -2,8 +2,6 @@ pub mod suit;
 
 
 use std::fmt::{Display, Formatter, Result};
-use std::slice::Iter;
-use std::hash::{Hash};
 use std::cmp::Ordering;
 use std::collections::HashMap;
 pub use self::suit::Suit;
@@ -20,7 +18,7 @@ pub struct Cards<'a> (pub Vec<&'a Card>);
 impl<'a> Cards<'a> {
     pub fn ranks(self) -> Vec<u8> {
         let mut cards: Vec<u8> = vec![];
-        for card in self.0.iter() {
+        for card in (&self.0).iter() {
             cards.push(card.rank)
         }
         cards.sort();
@@ -31,16 +29,18 @@ impl<'a> Cards<'a> {
     pub fn lowest_number(&self) -> u8 {
        let cards = self.clone();
        let ranks = cards.ranks();
-       if ranks.contains(&14) && ranks.contains(&2) { // Only need this for straights, so check for a 2
+       // Only need this for straights, so check for a 2
+       // TODO: this way won't work for Omaha Hi/Lo or Razz
+       if ranks.contains(&14) && ranks.contains(&2) { 
            return 1;
        }
-       return self.0.last().unwrap().rank
+       self.0.last().unwrap().rank
     }
     
     // Values have Ace = 1 and 14
     pub fn values(self) -> Vec<u8> {
         let mut cards: Vec<u8> = vec![];
-        for card in self.0.iter() {
+        for card in (&self.0).iter() {
             cards.append(&mut card.rank().iter().map(|c| c.0).collect())
         }
         cards
@@ -48,8 +48,8 @@ impl<'a> Cards<'a> {
 
     pub fn suits(&self) -> HashMap<Suit, u8> {
         let mut suits: HashMap<Suit, u8>  = HashMap::new();
-        for card in self.0.iter() {
-            let number = suits.entry(card.suit.clone()).or_insert(0);
+        for card in (&self.0).iter() {
+            let number = suits.entry(card.suit).or_insert(0);
             *number += 1;
         }
         suits

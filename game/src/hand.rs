@@ -1,7 +1,8 @@
+#![allow(dead_code, unused_imports)]
+
 use card::{Card, Suit};
 use rankings::{get_rank, Ranks, Rank};
 use std::collections::HashMap;
-use std;
 
 #[derive(Debug, Eq, PartialEq)]
 pub struct Hand<'a, 'b> {
@@ -32,7 +33,7 @@ impl<'a, 'b> Hand<'a, 'b> {
   pub fn suits(&self) -> HashMap<Suit, u8> {
       let mut suits: HashMap<Suit, u8>  = HashMap::new();
       for card in self.cards.iter() {
-          let number = suits.entry(card.suit.clone()).or_insert(0);
+          let number = suits.entry(card.suit).or_insert(0);
           *number += 1;
       }
       suits
@@ -46,7 +47,7 @@ mod tests {
   #[test]
   fn should_create_a_hand() {
     let mut cards = vec![&Card{suit:Suit::Hearts, rank:2}];
-    let mut hand: Hand = Hand::new(&mut cards);
+    let hand: Hand = Hand::new(&mut cards);
     assert_eq!(hand, hand)
   }
 

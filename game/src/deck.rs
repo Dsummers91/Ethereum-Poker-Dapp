@@ -18,7 +18,7 @@ impl Deck<Vec<Card>> for Vec<Card> {
     fn populate(self: &mut Self) {
       for suit in Suit::iter() {
         for rank in 2..14+1 {
-          self.push(Card::new(rank, Suit::get_suit(suit)));
+          self.push(Card::new(rank, Suit::get_suit(*suit)));
         }
       }
     }
