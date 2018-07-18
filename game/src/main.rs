@@ -8,6 +8,7 @@ mod table;
 mod hand;
 mod rankings;
 mod game_types;
+mod dealer;
 
 use card::{Card};
 use deck::{Deck};

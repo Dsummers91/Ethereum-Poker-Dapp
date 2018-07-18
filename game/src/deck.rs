@@ -26,6 +26,8 @@ impl Deck<Vec<Card>> for Vec<Card> {
     fn shuffle(mut self: &mut Self)  {
         let mut rng = thread_rng();
         rng.shuffle(&mut self);
+        rng.shuffle(&mut self);
+        rng.shuffle(&mut self);
     }
 }
 
