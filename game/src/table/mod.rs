@@ -35,8 +35,8 @@ mod tests {
         // TODO - Implement way to Copy (NONE) without deriving Copy
         // prolly with macros
         // this fails:
-        // let mut players: [Option<&mut Player>; seats] = [player; seats];
         const SEATS: usize = 2;
+        //let mut players: [Option<&mut Player>; SEATS] = [Player::none(); SEATS];
         let mut players: [Option<&mut Player>; SEATS] = [player, player_2];
 		let mut table = Table::new(GameTypes::TexasHoldem, &mut deck, &mut players, SEATS);
         table.deal();
