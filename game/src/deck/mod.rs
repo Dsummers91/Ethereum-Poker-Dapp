@@ -35,7 +35,8 @@ impl Deck<Vec<Card>> for Vec<Card> {
 mod tests {
     use super::*;
     #[test]
-    fn should_be_true() {
+
+    fn should_have_52_cards() {
         let deck: Vec<Card> = Deck::new();
         assert_eq!(deck.len(), 52);
     }

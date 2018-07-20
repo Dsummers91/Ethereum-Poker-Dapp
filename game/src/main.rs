@@ -8,15 +8,24 @@ mod table;
 mod hand;
 mod rankings;
 mod game_types;
-mod dealer;
 
 use card::{Card};
 use deck::{Deck};
 
+use std::{thread, time};
 
 pub fn main() {
-    let deck: Vec<Card> = Deck::new();
-    println!("{:?}", deck);
+	thread::spawn(|| {
+		for i in 1..10 {
+			let deck: Vec<Card> = Deck::new();
+			println!("{:?}", deck);
+		}
+	});
+
+	let ten_millis = time::Duration::from_millis(10);
+	let now = time::Instant::now();
+
+	thread::sleep(ten_millis);
 }
 
 #[cfg(test)]
