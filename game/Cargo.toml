@@ -5,3 +5,4 @@ authors = ["Deon <deonsummers91@gmail.com>"]
 
 [dependencies]
 rand = "0.3.18"
+dotenv = "0.13.0"
