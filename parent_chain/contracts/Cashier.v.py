@@ -28,7 +28,7 @@ def __default__():
 def verify(proofs: bytes32[100], root: bytes32, leaf: bytes32) -> bool:
     computed_hash: bytes32 = leaf
     for proof in proofs:
-        if leaf < proof:
+        if convert(leaf, 'uint256') < convert(proof, 'uint256'):
             computed_hash = sha3(concat(computed_hash, proof))
         else:
             computed_hash = sha3(concat(proof, computed_hash))

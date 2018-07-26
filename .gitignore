@@ -2,4 +2,4 @@ target
 *.swp
 
 *.env
-!.env
+!development.env
