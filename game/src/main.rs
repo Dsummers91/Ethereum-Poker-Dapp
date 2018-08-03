@@ -1,6 +1,3 @@
-#![feature(stdsimd)]
-#![feature(ssse3)]
-
 extern crate dotenv;
 
 use dotenv::dotenv;
