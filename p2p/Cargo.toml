@@ -1,0 +1,7 @@
+[package]
+name = "p2p"
+version = "0.1.0"
+authors = ["Deon <deonsummers91@gmail.com>"]
+
+[dependencies]
+crust = "0.30.1"
