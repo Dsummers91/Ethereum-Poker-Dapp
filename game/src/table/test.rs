@@ -1,6 +1,7 @@
 use card::{Card, suit};
 use game_types::{GameTypes};
 use deck::{Deck};
+use hand::Hand;
 use player::{Player};
 use table::{Table, dealer::Deal};
 
@@ -23,9 +24,11 @@ mod tests {
 		assert_eq!(table.game, GameTypes::TexasHoldem);
 	}
 	fn should_be_able_to_deal_to_players() {
+        let player_hand = Hand::new(&mut []);
+        let player_2_hand = Hand::new(&mut []);
         let mut deck = Deck::new();
-        let player: Option<&mut Player> = None;
-        let player_2: Option<&mut Player> = None;
+        let player: Option<&mut Player> = Some(&mut Player::new(&mut player_hand));
+        let player_2: Option<&mut Player> = Some(&mut Player::new(&mut player_2_hand));
         const SEATS: usize = 2;
         let mut players: [Option<&mut Player>; SEATS] = [player, player_2];
 		let mut table = Table::new(GameTypes::TexasHoldem, &mut deck, &mut players, SEATS);
