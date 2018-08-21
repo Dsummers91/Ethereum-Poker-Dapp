@@ -2,6 +2,9 @@
 mod dealer;
 mod test;
 
+use std::collections::HashMap;
+
+use std::sync::{Arc, Mutex};
 use card::{Card, suit};
 use game_types::{GameTypes};
 use deck::{Deck};
@@ -14,7 +17,7 @@ pub struct Table<'a, 'b, 'c : 'b, 'd : 'c> {
     deck: &'a mut Vec<Card>,
     round: u8,
     board: Vec<Card>,
-    players:&'b mut [Option<&'c mut Player<'d, 'd>>]
+    seats: HashMap<i8, Player<'d, 'd>>,
 }
 
 
@@ -22,11 +25,16 @@ impl<'a, 'b, 'c, 'd> Table<'a, 'b, 'c, 'd> {
     pub fn new(
         game: GameTypes, 
         deck: &'a mut Vec<Card>, 
-        players: &'b mut[Option<&'c mut Player<'d, 'd>>], 
         _seats: usize
     ) -> Table<'a, 'b, 'c, 'd> {
         let mut board = vec![];
-        Table{game, round: 0, board, deck, players}
+        let seats = HashMap::new();
+        Table{game, seats, round: 0, board, deck}
+    }
+
+    pub fn assign_player(self,  player: Player<'d, 'd>) -> Self {
+        println!("{:?}", player);
+        self
     }
 }
 

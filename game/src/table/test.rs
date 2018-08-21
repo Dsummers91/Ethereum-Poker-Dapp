@@ -23,6 +23,11 @@ mod tests {
         table.deal();
 		assert_eq!(table.game, GameTypes::TexasHoldem);
 	}
+
+    fn player_should_be_able_to_sit() {
+        let table = Table::new();
+    }
+
 	fn should_be_able_to_deal_to_players() {
         let mut player_hand = Hand::new(&mut []);
         let mut player_2_hand = Hand::new(&mut []);
@@ -32,7 +37,7 @@ mod tests {
         let player: Option<&mut Player> = Some(&mut player_struct);
         let player_2: Option<&mut Player> = Some(&mut player_struct_2); 
         const SEATS: usize = 2;
-        let mut players: [Option<&mut Player>; SEATS] = [player, player_2];
+        //let mut players: [Option<&mut Player>; SEATS] = [player, player_2];
 		//let mut table = Table::new(GameTypes::TexasHoldem, &mut deck, &mut players, SEATS);
 		//assert_eq!(table.game, GameTypes::TexasHoldem);
 	}
