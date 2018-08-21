@@ -12,27 +12,27 @@ use player::{Player};
 use self::dealer::Deal;
 
 #[derive(Debug)]
-pub struct Table<'a, 'b, 'c : 'b, 'd : 'c> {
+pub struct Table<'a, 'b> {
     pub game: GameTypes,
     deck: &'a mut Vec<Card>,
     round: u8,
     board: Vec<Card>,
-    seats: HashMap<i8, Player<'d, 'd>>,
+    seats: HashMap<i8, Player<'b, 'b>>,
 }
 
 
-impl<'a, 'b, 'c, 'd> Table<'a, 'b, 'c, 'd> {
+impl<'a, 'b> Table<'a, 'b> {
     pub fn new(
         game: GameTypes, 
         deck: &'a mut Vec<Card>, 
-        _seats: usize
-    ) -> Table<'a, 'b, 'c, 'd> {
+        _seats: usize,
+    ) -> Table<'a, 'b> {
         let mut board = vec![];
         let seats = HashMap::new();
         Table{game, seats, round: 0, board, deck}
     }
 
-    pub fn assign_player(self,  player: Player<'d, 'd>) -> Self {
+    pub fn assign_player(self,  player: Player<'b, 'b>) -> Self {
         println!("{:?}", player);
         self
     }

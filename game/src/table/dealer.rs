@@ -7,19 +7,9 @@ pub trait Deal {
 }
 
 
-impl<'a, 'b, 'c, 'd> Deal for Table<'a, 'b, 'c, 'd> {
+impl<'a, 'b> Deal for Table<'a, 'b> {
     fn deal(&mut self) {
-        for player in self.players.iter() {
-            match player {
-                Some(x) => {
-                    let card = self.deck.remove(1);
-                    self.board.push(card);
-                    println!("{:?}",  player);
-                },
-                None => { break }
-            }
-        }
-        self.round = self.round + 1;
+        unimplemented!()
     }
 
     fn show_flop(&mut self) {

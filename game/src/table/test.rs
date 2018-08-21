@@ -19,13 +19,13 @@ mod tests {
         // this fails:
         //let mut players: [Option<&mut Player>; SEATS] = [Player::none(); SEATS];
         let mut players: [Option<&mut Player>; SEATS] = [player, player_2];
-		let mut table = Table::new(GameTypes::TexasHoldem, &mut deck, &mut players, SEATS);
-        table.deal();
+		let mut table = Table::new(GameTypes::TexasHoldem, &mut deck, SEATS);
 		assert_eq!(table.game, GameTypes::TexasHoldem);
 	}
 
     fn player_should_be_able_to_sit() {
-        let table = Table::new();
+        let mut deck: Vec<Card> = Deck::new();
+        let table = Table::new(GameTypes::TexasHoldem, &mut deck, 6);
     }
 
 	fn should_be_able_to_deal_to_players() {
