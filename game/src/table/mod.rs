@@ -17,7 +17,7 @@ pub struct Table<'a, 'b> {
     deck: &'a mut Vec<Card>,
     round: u8,
     board: Vec<Card>,
-    seats: HashMap<i8, Player<'b>>,
+    seats: Arc<Mutex<HashMap<i8, Player<'b>>>>,
 }
 
 
@@ -28,13 +28,18 @@ impl<'a, 'b> Table<'a, 'b> {
         _seats: usize,
     ) -> Table<'a, 'b> {
         let mut board = vec![];
-        let seats = HashMap::new();
+        let seats = Arc::new(Mutex::new(HashMap::new()));
         Table{game, seats, round: 0, board, deck}
     }
 
-    pub fn assign_player(self,  player: &mut Player<'a>) -> Self {
-        println!("{:?}", player);
-        self
+    pub fn assign_player(&mut self,  player: Player<'b>, seat: i8) {
+        let mut seats = self.seats.lock().unwrap();
+        seats.entry(seat).or_insert(player);
+    }
+
+    pub fn start_hand(&mut self) {
+        let seats = self.seats.lock().unwrap();
+        
     }
 }
 
