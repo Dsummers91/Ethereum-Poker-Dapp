@@ -5,13 +5,13 @@ use table::{Table};
 use hand::{Hand};
 
 #[derive(Debug)]
-pub struct Player<'a, 'b: 'a> {
-  pub hand: &'a Hand<'a, 'b>,
+pub struct Player<'a> {
+  pub hand: Hand<'a, 'a>,
   pub chips: u64,
 }
 
-impl<'a, 'b> Player<'a, 'b> {
-    pub fn new(hand: &'a mut Hand<'a, 'b>) -> Player<'a, 'b> {
+impl<'a> Player<'a> {
+    pub fn new(hand: Hand<'a, 'a>) -> Player<'a> {
        Player{hand: hand, chips: 0}
     }
 }

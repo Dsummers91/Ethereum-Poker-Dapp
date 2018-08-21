@@ -8,7 +8,7 @@ mod tests {
   #[test]
   fn should_create_a_hand() {
     let mut cards = vec![&Card{suit:Suit::Hearts, rank:2}];
-    let hand: Hand = Hand::new(&mut cards);
+    let hand: Hand = Hand::new(cards.to_vec());
     assert_eq!(hand, hand)
   }
 
@@ -21,7 +21,7 @@ mod tests {
       &Card{suit:Suit::Hearts, rank:7},
       &Card{suit:Suit::Hearts, rank:10}
     ];
-    let mut hand: Hand = Hand::new(&mut cards);
+    let mut hand: Hand = Hand::new(cards.to_vec());
     assert_eq!(hand.ranks(), vec![14, 10, 7, 3, 2])
   }
 
@@ -34,7 +34,7 @@ mod tests {
       &Card{suit:Suit::Hearts, rank:5},
       &Card{suit:Suit::Hearts, rank:8}
     ];
-    let mut hand: Hand = Hand::new(&mut cards);
+    let mut hand: Hand = Hand::new(cards.to_vec());
     hand.get_value();
     assert_eq!(hand.value.unwrap().rank, Ranks::OnePair)
   }
