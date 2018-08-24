@@ -23,7 +23,7 @@ pub enum Ranks {
 }
 
 pub fn get_rank(_card: &Hand) -> Option<Ranks> {
-    if let Some(_x) = is_pair(_card.used_cards.to_vec()) {
+    if let Some(_x) = is_pair(_card.cards.to_vec()) {
         return Some(Ranks::OnePair)
     }
     None
@@ -262,7 +262,7 @@ mod tests {
             &Card{suit:Suit::Hearts, rank:6}
         ];
         let hand = Hand::new(cards.to_vec());
-        assert_eq!(is_straight(hand.used_cards.to_vec()), Some(7));
+        assert_eq!(is_straight(hand.cards.to_vec()), Some(7));
     }
 
     #[test]
@@ -275,7 +275,7 @@ mod tests {
             &Card{suit:Suit::Hearts, rank:10}
         ];
         let hand = Hand::new(cards.to_vec());
-        assert_eq!(is_straight(hand.used_cards.to_vec()), Some(14));
+        assert_eq!(is_straight(hand.cards.to_vec()), Some(14));
     }
 
     #[test]
@@ -288,7 +288,7 @@ mod tests {
             &Card{suit:Suit::Hearts, rank:5}
         ];
         let hand = Hand::new(cards.to_vec());
-        assert_eq!(is_straight(hand.used_cards.to_vec()), Some(5));
+        assert_eq!(is_straight(hand.cards.to_vec()), Some(5));
     }
 
     #[test]

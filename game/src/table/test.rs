@@ -22,23 +22,21 @@ mod tests {
         let mut table = Table::new(GameTypes::TexasHoldem, &mut deck, 6);
         let cards = vec![];
         let hand = Hand::new(cards);
-        let mut player = Player{hand: hand, chips: 1000};
+        let mut player = Player{hand: hand, chips: 1000, active: false, sitting_out: false};
         table.assign_player(player, 1);
         assert_eq!(table.seats.lock().unwrap().get(&1).unwrap().chips, 1000);
     }
 
 	#[test]
 	fn should_be_able_to_deal_to_players() {
-        let mut player_hand = Hand::new(vec![]);
-        let mut player_2_hand = Hand::new(vec![]);
         let mut deck: Vec<Card> = Deck::new();
-        let mut player_struct =  Player::new(player_hand);
-        let mut player_struct_2 =  Player::new(player_2_hand);
-        let player: Option<&mut Player> = Some(&mut player_struct);
-        let player_2: Option<&mut Player> = Some(&mut player_struct_2); 
-        const SEATS: usize = 2;
-        //let mut players: [Option<&mut Player>; SEATS] = [player, player_2];
-		//let mut table = Table::new(GameTypes::TexasHoldem, &mut deck, &mut players, SEATS);
-		//assert_eq!(table.game, GameTypes::TexasHoldem);
-	}
+        let mut table = Table::new(GameTypes::TexasHoldem, &mut deck, 6);
+        let cards = vec![];
+        let hand = Hand::new(cards);
+        let mut player = Player::new(hand);
+        table.assign_player(player, 1);
+        player.add_chips(1000);
+        table.start_hand();
+        println!("{:?}", table);
+    }
 }

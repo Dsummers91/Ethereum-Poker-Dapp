@@ -38,8 +38,12 @@ impl<'a, 'b> Table<'a, 'b> {
     }
 
     pub fn start_hand(&mut self) {
-        let seats = self.seats.lock().unwrap();
-        
+        let mut seats = self.seats.lock().unwrap();
+        for (_, player) in seats.iter_mut() {
+            if player.chips > 0 && !player.sitting_out {
+                player.active = true;
+            }
+        }
     }
 }
 
