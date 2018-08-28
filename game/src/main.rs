@@ -16,14 +16,15 @@ mod game_types;
 
 use card::{Card};
 use deck::{Deck};
-
+use card::{suit::Suit};
+use rand::{thread_rng, Rng};
 use std::{thread, time};
 
 pub fn main() {
+    let cards: Vec<&Card> = Deck::new();
 	thread::spawn(|| {
 		for i in 1..10 {
 			let deck: Vec<Card> = Deck::new();
-			println!("{:?}", deck);
 		}
 	});
 

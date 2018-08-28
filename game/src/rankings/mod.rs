@@ -32,7 +32,7 @@ pub fn get_rank(_card: &Hand) -> Option<Ranks> {
 // Should return flush
 fn is_flush<'a>(cards: Vec<&'a Card>) -> Option<Rank<'a>> {
     let c = cards.clone();
-    let suits = Cards(c).suits();
+    let suits = c.suits();
     if let Some(count_hearts) = suits.get(&Suit::Hearts) {
         if *count_hearts >= 5 {
             return Some(Rank{rank: Ranks::Flush, cards: get_flush_hand(cards, Suit::Hearts)})
@@ -69,7 +69,7 @@ fn get_flush_hand(mut cards: Vec<&Card>, suit: Suit) -> Vec<&Card> {
 
 
 fn is_straight_flush(c: Vec<&Card>) -> Option<u8> {
-    let cards = Cards(c.clone());
+    let cards = c.clone();
     let suits = cards.suits();
     if let Some(count_hearts) = suits.get(&Suit::Hearts) {
         if *count_hearts >= 5 {
@@ -98,7 +98,7 @@ fn is_straight_flush(c: Vec<&Card>) -> Option<u8> {
 fn is_straight(mut c: Vec<&Card>) -> Option<u8> {
     c.sort();
     for window in c.windows(5) {
-        let mut cards = Cards(window.to_vec());
+        let mut cards = window.to_vec();
         let low_card = cards.lowest_number();
         let ranks = cards.values();
         if ranks.contains(&(low_card as u8)) 
@@ -114,7 +114,7 @@ fn is_straight(mut c: Vec<&Card>) -> Option<u8> {
 
 fn is_pair(mut cards: Vec<&Card>) -> Option<u8> {
     cards.sort();
-    let ranks = Cards(cards).ranks();
+    let ranks = cards.ranks();
     for rank in ranks.windows(2) {
         println!("{:?}", rank);
         if rank[0] == rank[1] {
@@ -148,7 +148,7 @@ fn is_full_house(cards: Vec<&Card>) -> Option<[u8; 2]> {
 }
 
 fn is_three_of_a_kind(cards: Vec<&Card>) -> Option<u8> {
-    let ranks = Cards(cards).ranks();
+    let ranks = cards.ranks();
     for rank in ranks.windows(3) {
         println!("{:?}", rank);
         if rank[0] == rank[1] && rank[0] == rank[2] {
@@ -159,7 +159,7 @@ fn is_three_of_a_kind(cards: Vec<&Card>) -> Option<u8> {
 }
 
 fn is_four_of_a_kind(cards: Vec<&Card>) -> Option<u8> {
-    let ranks = Cards(cards).ranks();
+    let ranks = cards.ranks();
     for rank in ranks.windows(4) {;
         if rank[0] == rank[1] && rank[0] == rank[2] && rank[0] == rank[3] {
             return Some(rank[0]);

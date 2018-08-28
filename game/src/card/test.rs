@@ -1,11 +1,16 @@
 
 #[cfg(test)]
 mod tests {
-    use card::{Card, suit::Suit};
+    use card::{Card, suit::Suit, Cards};
+
+    #[test]
+    #[ignore]
+    fn should_put_cards_on_heap() {
+    }
 
     #[test]
     fn should_sort_correctly() {
-        let mut cards = vec![
+        let mut cards: Vec<&Card> = vec![
             &Card{suit:Suit::Spades, rank: 13},
 			&Card{suit:Suit::Diamonds, rank: 12},
 			&Card{suit:Suit::Spades, rank: 14},

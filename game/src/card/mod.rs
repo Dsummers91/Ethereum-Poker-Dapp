@@ -5,20 +5,36 @@ use std::fmt::{Display, Formatter, Result};
 use std::cmp::Ordering;
 use std::collections::HashMap;
 pub use self::suit::Suit;
+use game_types::GameTypes;
+
 
 #[derive(Debug, Eq, Clone)]
 pub struct Card {
   pub rank: u8,
-  pub suit: Suit
+  pub suit: Suit,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct Cards<'a> (pub Vec<&'a Card>);
+pub trait Cards<'a, T> {
+    fn ranks(self) -> Vec<u8>;
+    fn suits(&self) -> HashMap<Suit, u8>;
+    fn values(self) -> Vec<u8>;
+    fn lowest_number(&self) -> u8;
+}
 
-impl<'a> Cards<'a> {
-    pub fn ranks(self) -> Vec<u8> {
+pub fn create() -> Vec<Card> {
+    let mut cards: Vec<Card> = Vec::new();
+    for suit in Suit::iter() {
+        for rank in 2..14+1 {
+            cards.push(Card::new(rank, Suit::get_suit(*suit)));
+        }
+    }
+    cards
+}
+
+impl<'a> Cards<'a, Vec<&'a Card>> for Vec<&'a Card> {
+    fn ranks(self) -> Vec<u8> {
         let mut cards: Vec<u8> = vec![];
-        for card in (&self.0).iter() {
+        for card in (&self).iter() {
             cards.push(card.rank)
         }
         cards.sort();
@@ -26,7 +42,7 @@ impl<'a> Cards<'a> {
         cards
     }
     
-    pub fn lowest_number(&self) -> u8 {
+    fn lowest_number(&self) -> u8 {
        let cards = self.clone();
        let ranks = cards.ranks();
        // Only need this for straights, so check for a 2
@@ -34,21 +50,21 @@ impl<'a> Cards<'a> {
        if ranks.contains(&14) && ranks.contains(&2) { 
            return 1;
        }
-       self.0.last().unwrap().rank
+       self.last().unwrap().rank
     }
     
     // Values have Ace = 1 and 14
-    pub fn values(self) -> Vec<u8> {
+    fn values(self) -> Vec<u8> {
         let mut cards: Vec<u8> = vec![];
-        for card in (&self.0).iter() {
+        for card in (&self).iter() {
             cards.append(&mut card.rank().iter().map(|c| c.0).collect())
         }
         cards
     }
 
-    pub fn suits(&self) -> HashMap<Suit, u8> {
+    fn suits(&self) -> HashMap<Suit, u8> {
         let mut suits: HashMap<Suit, u8>  = HashMap::new();
-        for card in (&self.0).iter() {
+        for card in (&self).iter() {
             let number = suits.entry(card.suit).or_insert(0);
             *number += 1;
         }
