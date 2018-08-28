@@ -10,7 +10,7 @@ pub trait Deck<'a, T> {
     fn shuffle(&mut self);
 }
 
-impl<'a> Deck<'a, Vec<&'a Card>> for Vec<&'a Card> {
+impl<'a> Deck<'a, &'a[&'a Card]> for &'a[&'a Card] {
     fn new() -> Self {
         let mut deck: Vec<&'a Card> = Vec::new();
         deck.populate();
@@ -26,7 +26,7 @@ impl<'a> Deck<'a, Vec<&'a Card>> for Vec<&'a Card> {
         for i in 0..cards.len() {
             card_ref.push(&cards[i] as &'a Card);
         }
-        card_ref
+        &card_ref[..]
     }
 
     fn shuffle(mut self: &mut Self)  {
