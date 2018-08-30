@@ -11,6 +11,7 @@ mod tests {
     #[test]
     fn should_be_able_to_use_global_cards() {
         let cards: Vec<Card> = card::create();
-        let deck: &[&Card] = Deck::allocate(cards);
+        let card_ref = card::allocate(&cards);
+        let deck: &[&Card] = &card_ref[..];
     }
 }

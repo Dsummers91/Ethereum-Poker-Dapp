@@ -31,6 +31,14 @@ pub fn create() -> Vec<Card> {
     cards
 }
 
+pub fn allocate<'a>(cards: &'a Vec<Card>) -> Vec<&'a Card> {
+    let mut card_ref: Vec<&'a Card> = Vec::new();
+    for i in 0..cards.len() {
+        card_ref.push(&cards[i] as &'a Card);
+    }
+    card_ref
+}
+
 impl<'a> Cards<'a, Vec<&'a Card>> for Vec<&'a Card> {
     fn ranks(self) -> Vec<u8> {
         let mut cards: Vec<u8> = vec![];

@@ -14,14 +14,15 @@ mod hand;
 mod rankings;
 mod game_types;
 
-use card::{Card};
+use card::{Card, create as create_cards, allocate};
 use deck::{Deck};
 use card::{suit::Suit};
 use rand::{thread_rng, Rng};
 use std::{thread, time};
 
 pub fn main() {
-    let cards: Vec<&Card> = Deck::new();
+    let cards: Vec<Card> = create_cards();
+    let deck = allocate(&cards);
 	thread::spawn(|| {
 		for i in 1..10 {
 			let deck: Vec<Card> = Deck::new();
