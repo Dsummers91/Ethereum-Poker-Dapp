@@ -34,7 +34,7 @@ py==1.5.3
 py-geth==2.0.1
 py-solc==3.1.0
 pycparser==2.18
-pycryptodome==3.6.1
+pycryptodome==3.6.6
 pyethash==0.1.27
 pylru==1.1.0
 pysha3==1.0.2
