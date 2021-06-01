@@ -49,7 +49,7 @@ semantic-version==2.6.0
 six==1.11.0
 toolz==0.9.0
 toposort==1.5
-urllib3==1.23
+urllib3==1.26.5
 watchdog==0.8.3
 web3==4.3.0
 websockets==4.0.1
